@@ -1,0 +1,39 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "iana-crypt-hash",
+    "module-revision": "2014-08-06",
+    "sid-file-status": "unpublished",
+    "assignment-range": [
+      {
+        "entry-point": "1200",
+        "size": "50"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "iana-crypt-hash",
+        "status": "unstable",
+        "sid": "1200"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "crypt-hash-md5",
+        "status": "unstable",
+        "sid": "1201"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "crypt-hash-sha-256",
+        "status": "unstable",
+        "sid": "1202"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "crypt-hash-sha-512",
+        "status": "unstable",
+        "sid": "1203"
+      }
+    ]
+  }
+}

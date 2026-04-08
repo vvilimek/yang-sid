@@ -1,0 +1,573 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "ietf-system",
+    "module-revision": "2014-08-06",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "ietf-yang-types",
+        "module-revision": "2013-07-15"
+      },
+      {
+        "module-name": "ietf-inet-types",
+        "module-revision": "2013-07-15"
+      },
+      {
+        "module-name": "ietf-netconf-acm",
+        "module-revision": "2018-02-14"
+      },
+      {
+        "module-name": "iana-crypt-hash",
+        "module-revision": "2014-08-06"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "1700",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-system",
+        "status": "unstable",
+        "sid": "1700"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "authentication-method",
+        "status": "unstable",
+        "sid": "1701"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "local-users",
+        "status": "unstable",
+        "sid": "1702"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "radius",
+        "status": "unstable",
+        "sid": "1703"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "radius-authentication-type",
+        "status": "unstable",
+        "sid": "1704"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "radius-chap",
+        "status": "unstable",
+        "sid": "1705"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "radius-pap",
+        "status": "unstable",
+        "sid": "1706"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "authentication",
+        "status": "unstable",
+        "sid": "1707"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "dns-udp-tcp-port",
+        "status": "unstable",
+        "sid": "1708"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "local-users",
+        "status": "unstable",
+        "sid": "1709"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "ntp",
+        "status": "unstable",
+        "sid": "1710"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "ntp-udp-port",
+        "status": "unstable",
+        "sid": "1711"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "radius",
+        "status": "unstable",
+        "sid": "1712"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "radius-authentication",
+        "status": "unstable",
+        "sid": "1713"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "timezone-name",
+        "status": "unstable",
+        "sid": "1714"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:set-current-datetime",
+        "status": "unstable",
+        "sid": "1715"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:set-current-datetime/input",
+        "status": "unstable",
+        "sid": "1716"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:set-current-datetime/input/current-datetime",
+        "status": "unstable",
+        "sid": "1717"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:set-current-datetime/output",
+        "status": "unstable",
+        "sid": "1718"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system",
+        "status": "unstable",
+        "sid": "1719"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-restart",
+        "status": "unstable",
+        "sid": "1720"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-restart/input",
+        "status": "unstable",
+        "sid": "1721"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-restart/output",
+        "status": "unstable",
+        "sid": "1722"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-shutdown",
+        "status": "unstable",
+        "sid": "1723"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-shutdown/input",
+        "status": "unstable",
+        "sid": "1724"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-shutdown/output",
+        "status": "unstable",
+        "sid": "1725"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state",
+        "status": "unstable",
+        "sid": "1726"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/clock",
+        "status": "unstable",
+        "sid": "1727"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/clock/boot-datetime",
+        "status": "unstable",
+        "sid": "1728"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/clock/current-datetime",
+        "status": "unstable",
+        "sid": "1729"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/platform",
+        "status": "unstable",
+        "sid": "1730"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/platform/machine",
+        "status": "unstable",
+        "sid": "1731"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/platform/os-name",
+        "status": "unstable",
+        "sid": "1732"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/platform/os-release",
+        "status": "unstable",
+        "sid": "1733"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system-state/platform/os-version",
+        "status": "unstable",
+        "sid": "1734"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication",
+        "status": "unstable",
+        "sid": "1735"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user",
+        "status": "unstable",
+        "sid": "1736"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user-authentication-order",
+        "status": "unstable",
+        "sid": "1737"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user/authorized-key",
+        "status": "unstable",
+        "sid": "1738"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user/authorized-key/algorithm",
+        "status": "unstable",
+        "sid": "1739"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user/authorized-key/key-data",
+        "status": "unstable",
+        "sid": "1740"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user/authorized-key/name",
+        "status": "unstable",
+        "sid": "1741"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user/name",
+        "status": "unstable",
+        "sid": "1742"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/authentication/user/password",
+        "status": "unstable",
+        "sid": "1743"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/clock",
+        "status": "unstable",
+        "sid": "1744"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/clock/timezone",
+        "status": "unstable",
+        "sid": "1745"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/clock/timezone/timezone-name",
+        "status": "unstable",
+        "sid": "1746"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/clock/timezone/timezone-name/timezone-name",
+        "status": "unstable",
+        "sid": "1747"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/clock/timezone/timezone-utc-offset",
+        "status": "unstable",
+        "sid": "1748"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/clock/timezone/timezone-utc-offset/timezone-utc-offset",
+        "status": "unstable",
+        "sid": "1749"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/contact",
+        "status": "unstable",
+        "sid": "1750"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver",
+        "status": "unstable",
+        "sid": "1751"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/options",
+        "status": "unstable",
+        "sid": "1752"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/options/attempts",
+        "status": "unstable",
+        "sid": "1753"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/options/timeout",
+        "status": "unstable",
+        "sid": "1754"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/search",
+        "status": "unstable",
+        "sid": "1755"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/server",
+        "status": "unstable",
+        "sid": "1756"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/server/name",
+        "status": "unstable",
+        "sid": "1757"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/server/transport",
+        "status": "unstable",
+        "sid": "1758"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/server/transport/udp-and-tcp",
+        "status": "unstable",
+        "sid": "1759"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/server/transport/udp-and-tcp/udp-and-tcp",
+        "status": "unstable",
+        "sid": "1760"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/server/transport/udp-and-tcp/udp-and-tcp/address",
+        "status": "unstable",
+        "sid": "1761"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/dns-resolver/server/transport/udp-and-tcp/udp-and-tcp/port",
+        "status": "unstable",
+        "sid": "1762"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/hostname",
+        "status": "unstable",
+        "sid": "1763"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/location",
+        "status": "unstable",
+        "sid": "1764"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp",
+        "status": "unstable",
+        "sid": "1765"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/enabled",
+        "status": "unstable",
+        "sid": "1766"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server",
+        "status": "unstable",
+        "sid": "1767"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/association-type",
+        "status": "unstable",
+        "sid": "1768"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/iburst",
+        "status": "unstable",
+        "sid": "1769"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/name",
+        "status": "unstable",
+        "sid": "1770"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/prefer",
+        "status": "unstable",
+        "sid": "1771"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/transport",
+        "status": "unstable",
+        "sid": "1772"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/transport/udp",
+        "status": "unstable",
+        "sid": "1773"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/transport/udp/udp",
+        "status": "unstable",
+        "sid": "1774"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/transport/udp/udp/address",
+        "status": "unstable",
+        "sid": "1775"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/ntp/server/transport/udp/udp/port",
+        "status": "unstable",
+        "sid": "1776"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius",
+        "status": "unstable",
+        "sid": "1777"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/options",
+        "status": "unstable",
+        "sid": "1778"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/options/attempts",
+        "status": "unstable",
+        "sid": "1779"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/options/timeout",
+        "status": "unstable",
+        "sid": "1780"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server",
+        "status": "unstable",
+        "sid": "1781"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/authentication-type",
+        "status": "unstable",
+        "sid": "1782"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/name",
+        "status": "unstable",
+        "sid": "1783"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/transport",
+        "status": "unstable",
+        "sid": "1784"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/transport/udp",
+        "status": "unstable",
+        "sid": "1785"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/transport/udp/udp",
+        "status": "unstable",
+        "sid": "1786"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/transport/udp/udp/address",
+        "status": "unstable",
+        "sid": "1787"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/transport/udp/udp/authentication-port",
+        "status": "unstable",
+        "sid": "1788"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-system:system/radius/server/transport/udp/udp/shared-secret",
+        "status": "unstable",
+        "sid": "1789"
+      }
+    ]
+  }
+}

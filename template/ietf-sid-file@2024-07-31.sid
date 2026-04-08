@@ -1,0 +1,133 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "ietf-sid-file",
+    "module-revision": "2024-07-31",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "ietf-yang-types",
+        "module-revision": "2013-07-15"
+      },
+      {
+        "module-name": "ietf-yang-structure-ext",
+        "module-revision": "2020-06-17"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "1300",
+        "size": "50"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-sid-file",
+        "status": "unstable",
+        "sid": "1300"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file",
+        "status": "unstable",
+        "sid": "1301"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/assignment-range",
+        "status": "unstable",
+        "sid": "1302"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/assignment-range/entry-point",
+        "status": "unstable",
+        "sid": "1303"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/assignment-range/size",
+        "status": "unstable",
+        "sid": "1304"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/dependency-revision",
+        "status": "unstable",
+        "sid": "1305"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/dependency-revision/module-name",
+        "status": "unstable",
+        "sid": "1306"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/dependency-revision/module-revision",
+        "status": "unstable",
+        "sid": "1307"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/description",
+        "status": "unstable",
+        "sid": "1308"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/item",
+        "status": "unstable",
+        "sid": "1309"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/item/identifier",
+        "status": "unstable",
+        "sid": "1310"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/item/namespace",
+        "status": "unstable",
+        "sid": "1311"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/item/sid",
+        "status": "unstable",
+        "sid": "1312"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/item/status",
+        "status": "unstable",
+        "sid": "1313"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/module-name",
+        "status": "unstable",
+        "sid": "1314"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/module-revision",
+        "status": "unstable",
+        "sid": "1315"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/sid-file-status",
+        "status": "unstable",
+        "sid": "1316"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-sid-file:sid-file/sid-file-version",
+        "status": "unstable",
+        "sid": "1317"
+      }
+    ]
+  }
+}

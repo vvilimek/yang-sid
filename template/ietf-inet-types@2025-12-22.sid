@@ -1,0 +1,21 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "ietf-inet-types",
+    "module-revision": "2025-12-22",
+    "sid-file-status": "unpublished",
+    "assignment-range": [
+      {
+        "entry-point": "1150",
+        "size": "50"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-inet-types",
+        "status": "unstable",
+        "sid": "1150"
+      }
+    ]
+  }
+}

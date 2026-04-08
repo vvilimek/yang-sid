@@ -1,0 +1,393 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "ietf-interfaces",
+    "module-revision": "2018-02-20",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "ietf-yang-types",
+        "module-revision": "2013-07-15"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "1500",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-interfaces",
+        "status": "unstable",
+        "sid": "1500"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "interface-type",
+        "status": "unstable",
+        "sid": "1501"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "arbitrary-names",
+        "status": "unstable",
+        "sid": "1502"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "if-mib",
+        "status": "unstable",
+        "sid": "1503"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "pre-provisioning",
+        "status": "unstable",
+        "sid": "1504"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces",
+        "status": "unstable",
+        "sid": "1505"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state",
+        "status": "unstable",
+        "sid": "1506"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface",
+        "status": "unstable",
+        "sid": "1507"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/admin-status",
+        "status": "unstable",
+        "sid": "1508"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/higher-layer-if",
+        "status": "unstable",
+        "sid": "1509"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/if-index",
+        "status": "unstable",
+        "sid": "1510"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/last-change",
+        "status": "unstable",
+        "sid": "1511"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/lower-layer-if",
+        "status": "unstable",
+        "sid": "1512"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/name",
+        "status": "unstable",
+        "sid": "1513"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/oper-status",
+        "status": "unstable",
+        "sid": "1514"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/phys-address",
+        "status": "unstable",
+        "sid": "1515"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/speed",
+        "status": "unstable",
+        "sid": "1516"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics",
+        "status": "unstable",
+        "sid": "1517"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/discontinuity-time",
+        "status": "unstable",
+        "sid": "1518"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/in-broadcast-pkts",
+        "status": "unstable",
+        "sid": "1519"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/in-discards",
+        "status": "unstable",
+        "sid": "1520"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/in-errors",
+        "status": "unstable",
+        "sid": "1521"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/in-multicast-pkts",
+        "status": "unstable",
+        "sid": "1522"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/in-octets",
+        "status": "unstable",
+        "sid": "1523"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/in-unicast-pkts",
+        "status": "unstable",
+        "sid": "1524"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/in-unknown-protos",
+        "status": "unstable",
+        "sid": "1525"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/out-broadcast-pkts",
+        "status": "unstable",
+        "sid": "1526"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/out-discards",
+        "status": "unstable",
+        "sid": "1527"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/out-errors",
+        "status": "unstable",
+        "sid": "1528"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/out-multicast-pkts",
+        "status": "unstable",
+        "sid": "1529"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/out-octets",
+        "status": "unstable",
+        "sid": "1530"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/statistics/out-unicast-pkts",
+        "status": "unstable",
+        "sid": "1531"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/type",
+        "status": "unstable",
+        "sid": "1532"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface",
+        "status": "unstable",
+        "sid": "1533"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/admin-status",
+        "status": "unstable",
+        "sid": "1534"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/description",
+        "status": "unstable",
+        "sid": "1535"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/enabled",
+        "status": "unstable",
+        "sid": "1536"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/higher-layer-if",
+        "status": "unstable",
+        "sid": "1537"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/if-index",
+        "status": "unstable",
+        "sid": "1538"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/last-change",
+        "status": "unstable",
+        "sid": "1539"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/link-up-down-trap-enable",
+        "status": "unstable",
+        "sid": "1540"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/lower-layer-if",
+        "status": "unstable",
+        "sid": "1541"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/name",
+        "status": "unstable",
+        "sid": "1542"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/oper-status",
+        "status": "unstable",
+        "sid": "1543"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/phys-address",
+        "status": "unstable",
+        "sid": "1544"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/speed",
+        "status": "unstable",
+        "sid": "1545"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics",
+        "status": "unstable",
+        "sid": "1546"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/discontinuity-time",
+        "status": "unstable",
+        "sid": "1547"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/in-broadcast-pkts",
+        "status": "unstable",
+        "sid": "1548"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/in-discards",
+        "status": "unstable",
+        "sid": "1549"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/in-errors",
+        "status": "unstable",
+        "sid": "1550"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/in-multicast-pkts",
+        "status": "unstable",
+        "sid": "1551"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/in-octets",
+        "status": "unstable",
+        "sid": "1552"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/in-unicast-pkts",
+        "status": "unstable",
+        "sid": "1553"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/in-unknown-protos",
+        "status": "unstable",
+        "sid": "1554"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/out-broadcast-pkts",
+        "status": "unstable",
+        "sid": "1555"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/out-discards",
+        "status": "unstable",
+        "sid": "1556"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/out-errors",
+        "status": "unstable",
+        "sid": "1557"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/out-multicast-pkts",
+        "status": "unstable",
+        "sid": "1558"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/out-octets",
+        "status": "unstable",
+        "sid": "1559"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/statistics/out-unicast-pkts",
+        "status": "unstable",
+        "sid": "1560"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/type",
+        "status": "unstable",
+        "sid": "1561"
+      }
+    ]
+  }
+}

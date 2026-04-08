@@ -1,0 +1,419 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "ietf-ip",
+    "module-revision": "2018-02-22",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "ietf-interfaces",
+        "module-revision": "2018-02-20"
+      },
+      {
+        "module-name": "ietf-inet-types",
+        "module-revision": "2013-07-15"
+      },
+      {
+        "module-name": "ietf-yang-types",
+        "module-revision": "2013-07-15"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "1600",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-ip",
+        "status": "unstable",
+        "sid": "1600"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "ipv4-non-contiguous-netmasks",
+        "status": "unstable",
+        "sid": "1601"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "ipv6-privacy-autoconf",
+        "status": "unstable",
+        "sid": "1602"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4",
+        "status": "unstable",
+        "sid": "1603"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/address",
+        "status": "unstable",
+        "sid": "1604"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/address/ip",
+        "status": "unstable",
+        "sid": "1605"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/address/origin",
+        "status": "unstable",
+        "sid": "1606"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/address/subnet",
+        "status": "unstable",
+        "sid": "1607"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/address/subnet/netmask/netmask",
+        "status": "unstable",
+        "sid": "1608"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/address/subnet/prefix-length/prefix-length",
+        "status": "unstable",
+        "sid": "1609"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/forwarding",
+        "status": "unstable",
+        "sid": "1610"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/mtu",
+        "status": "unstable",
+        "sid": "1611"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/neighbor",
+        "status": "unstable",
+        "sid": "1612"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/neighbor/ip",
+        "status": "unstable",
+        "sid": "1613"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/neighbor/link-layer-address",
+        "status": "unstable",
+        "sid": "1614"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv4/neighbor/origin",
+        "status": "unstable",
+        "sid": "1615"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6",
+        "status": "unstable",
+        "sid": "1616"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/address",
+        "status": "unstable",
+        "sid": "1617"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/address/ip",
+        "status": "unstable",
+        "sid": "1618"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/address/origin",
+        "status": "unstable",
+        "sid": "1619"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/address/prefix-length",
+        "status": "unstable",
+        "sid": "1620"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/address/status",
+        "status": "unstable",
+        "sid": "1621"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/forwarding",
+        "status": "unstable",
+        "sid": "1622"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/mtu",
+        "status": "unstable",
+        "sid": "1623"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/neighbor",
+        "status": "unstable",
+        "sid": "1624"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/neighbor/ip",
+        "status": "unstable",
+        "sid": "1625"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/neighbor/is-router",
+        "status": "unstable",
+        "sid": "1626"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/neighbor/link-layer-address",
+        "status": "unstable",
+        "sid": "1627"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/neighbor/origin",
+        "status": "unstable",
+        "sid": "1628"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces-state/interface/ietf-ip:ipv6/neighbor/state",
+        "status": "unstable",
+        "sid": "1629"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4",
+        "status": "unstable",
+        "sid": "1630"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/address",
+        "status": "unstable",
+        "sid": "1631"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/address/ip",
+        "status": "unstable",
+        "sid": "1632"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/address/origin",
+        "status": "unstable",
+        "sid": "1633"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/address/subnet",
+        "status": "unstable",
+        "sid": "1634"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/address/subnet/netmask/netmask",
+        "status": "unstable",
+        "sid": "1635"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/address/subnet/prefix-length/prefix-length",
+        "status": "unstable",
+        "sid": "1636"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/enabled",
+        "status": "unstable",
+        "sid": "1637"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/forwarding",
+        "status": "unstable",
+        "sid": "1638"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/mtu",
+        "status": "unstable",
+        "sid": "1639"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/neighbor",
+        "status": "unstable",
+        "sid": "1640"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/neighbor/ip",
+        "status": "unstable",
+        "sid": "1641"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/neighbor/link-layer-address",
+        "status": "unstable",
+        "sid": "1642"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv4/neighbor/origin",
+        "status": "unstable",
+        "sid": "1643"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6",
+        "status": "unstable",
+        "sid": "1644"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/address",
+        "status": "unstable",
+        "sid": "1645"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/address/ip",
+        "status": "unstable",
+        "sid": "1646"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/address/origin",
+        "status": "unstable",
+        "sid": "1647"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/address/prefix-length",
+        "status": "unstable",
+        "sid": "1648"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/address/status",
+        "status": "unstable",
+        "sid": "1649"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/autoconf",
+        "status": "unstable",
+        "sid": "1650"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/autoconf/create-global-addresses",
+        "status": "unstable",
+        "sid": "1651"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/autoconf/create-temporary-addresses",
+        "status": "unstable",
+        "sid": "1652"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/autoconf/temporary-preferred-lifetime",
+        "status": "unstable",
+        "sid": "1653"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/autoconf/temporary-valid-lifetime",
+        "status": "unstable",
+        "sid": "1654"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/dup-addr-detect-transmits",
+        "status": "unstable",
+        "sid": "1655"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/enabled",
+        "status": "unstable",
+        "sid": "1656"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/forwarding",
+        "status": "unstable",
+        "sid": "1657"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/mtu",
+        "status": "unstable",
+        "sid": "1658"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/neighbor",
+        "status": "unstable",
+        "sid": "1659"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/neighbor/ip",
+        "status": "unstable",
+        "sid": "1660"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/neighbor/is-router",
+        "status": "unstable",
+        "sid": "1661"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/neighbor/link-layer-address",
+        "status": "unstable",
+        "sid": "1662"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/neighbor/origin",
+        "status": "unstable",
+        "sid": "1663"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-interfaces:interfaces/interface/ietf-ip:ipv6/neighbor/state",
+        "status": "unstable",
+        "sid": "1664"
+      }
+    ]
+  }
+}

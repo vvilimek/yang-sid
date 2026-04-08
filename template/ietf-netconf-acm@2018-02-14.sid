@@ -1,0 +1,201 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "ietf-netconf-acm",
+    "module-revision": "2018-02-14",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "ietf-yang-types",
+        "module-revision": "2013-07-15"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "1250",
+        "size": "50"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-netconf-acm",
+        "status": "unstable",
+        "sid": "1250"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm",
+        "status": "unstable",
+        "sid": "1251"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/denied-data-writes",
+        "status": "unstable",
+        "sid": "1252"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/denied-notifications",
+        "status": "unstable",
+        "sid": "1253"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/denied-operations",
+        "status": "unstable",
+        "sid": "1254"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/enable-external-groups",
+        "status": "unstable",
+        "sid": "1255"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/enable-nacm",
+        "status": "unstable",
+        "sid": "1256"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/exec-default",
+        "status": "unstable",
+        "sid": "1257"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/groups",
+        "status": "unstable",
+        "sid": "1258"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/groups/group",
+        "status": "unstable",
+        "sid": "1259"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/groups/group/name",
+        "status": "unstable",
+        "sid": "1260"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/groups/group/user-name",
+        "status": "unstable",
+        "sid": "1261"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/read-default",
+        "status": "unstable",
+        "sid": "1262"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list",
+        "status": "unstable",
+        "sid": "1263"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/group",
+        "status": "unstable",
+        "sid": "1264"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/name",
+        "status": "unstable",
+        "sid": "1265"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule",
+        "status": "unstable",
+        "sid": "1266"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/access-operations",
+        "status": "unstable",
+        "sid": "1267"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/action",
+        "status": "unstable",
+        "sid": "1268"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/comment",
+        "status": "unstable",
+        "sid": "1269"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/module-name",
+        "status": "unstable",
+        "sid": "1270"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/name",
+        "status": "unstable",
+        "sid": "1271"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/rule-type",
+        "status": "unstable",
+        "sid": "1272"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/rule-type/data-node",
+        "status": "unstable",
+        "sid": "1273"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/rule-type/data-node/path",
+        "status": "unstable",
+        "sid": "1274"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/rule-type/notification",
+        "status": "unstable",
+        "sid": "1275"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/rule-type/notification/notification-name",
+        "status": "unstable",
+        "sid": "1276"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/rule-type/protocol-operation",
+        "status": "unstable",
+        "sid": "1277"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/rule-list/rule/rule-type/protocol-operation/rpc-name",
+        "status": "unstable",
+        "sid": "1278"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-netconf-acm:nacm/write-default",
+        "status": "unstable",
+        "sid": "1279"
+      }
+    ]
+  }
+}
