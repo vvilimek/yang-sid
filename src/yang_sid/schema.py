@@ -10,15 +10,20 @@ from .types import SID
 
 from typing import Optional
 
-class SchemaNode(yangson.schemanode.SchemaNode):
+class SchemaMixin:
     def __init__(self) -> None:
-        super().__init__()
         self.sid = Optional[SID] = None
+        print("SchemaMixin __init__()")
 
-class InternalNode(SchemaNode, yangson.schemanode.InternalNode):
+class SchemaNode(SchemaMixin, yangson.schemanode.SchemaNode):
     def __init__(self) -> None:
         super().__init__()
-        self.children_by_sid: dict[SID, SchemaNode] = {}
+        print("SchemaNode __init__()")
+
+class InternalMixin(SchemaMixin):
+    def __init__(self) -> None:
+        super().__init__()
+        print("InternalMixin __init__()")
 
     def _anydata_stmt(self, stmt: Statement, sctx: SchemaContext) -> None:
         self._handle_child(Anydata(), stmt, sctx)
@@ -56,70 +61,113 @@ class InternalNode(SchemaNode, yangson.schemanode.InternalNode):
     def _rpc_action_stmt(self, stmt: Statement, sctx: SchemaContext) -> None:
         self._handle_child(RpcActionNode(), stmt, sctx)
 
-class GroupNode(InternalNode, yangson.schemanode.GroupNode):
-    pass
 
-class YangData(GroupNode, yangson.schemanode.YangData):
+class InternalNode(InternalMixin, yangson.schemanode.InternalNode):
     def __init__(self) -> None:
-
         super().__init__()
+        print("InternalNode __init__()")
 
-class SchemaTreeNode(GroupNode, yangson.schemanode.SchemaTreeNode):
+class GroupNode(InternalMixin, yangson.schemanode.GroupNode):
+    def __init__(self) -> None:
+        super().__init__()
+        print("GroupNode __init__()")
+
+class YangData(InternalMixin, yangson.schemanode.YangData):
+    def __init__(self) -> None:
+        super().__init__()
+        print("YangData __init__()")
+
+class SchemaTreeNode(InternalMixin, yangson.schemanode.SchemaTreeNode):
     def __init__(self, schemadata: Optional[yangson.schemadata.SchemaData] = None):
         super(yangson.schemanode.SchemaTreeNode, self).__init__(schemadata)
+        print("SchemaTreeNode __init__()")
         self.sid: Optional[SID] = None
         self.children_by_sid: dict[SID, "SchemaNode"] = {}
 
-class DataNode(SchemaNode, yangson.schemanode.DataNode):
-    pass
+class DataNode(InternalMixin, yangson.schemanode.DataNode):
+    def __init__(self) -> None:
+        super().__init__()
+        print("DataNode __init__()")
 
-class TerminalNode(SchemaNode, yangson.schemanode.TerminalNode):
-    pass
+class TerminalNode(InternalMixin, yangson.schemanode.TerminalNode):
+    def __init__(self) -> None:
+        super().__init__()
+        print("TerminalNode __init__()")
 
-class ContainerNode(DataNode, InternalNode, yangson.schemanode.ContainerNode):
-    pass
+class ContainerNode(InternalMixin, yangson.schemanode.ContainerNode):
+    def __init__(self) -> None;
+        super().__init__()
+        print("ContainerNode __init__()")
 
-class Structure(InternalNode, yangson.schemanode.Structure):
-    pass
+class Structure(InternalMixin, yangson.schemanode.Structure):
+    def __init__(self) -> None:
+        super().__init__()
+        print("Structure __init__()")
 
-class SequenceNode(DataNode, yangson.schemanode.SequenceNode):
-    pass
+class SequenceNode(InternalMixin, yangson.schemanode.SequenceNode):
+    def __init__(self) -> None:
+        super().__init__()
+        print("SequenceNode __init__()")
 
 class ListNode(SequenceNode, InternalNode, yangson.schemanode.ListNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("ListNode __init__()")
 
-class ChoiceNode(InternalNode, yangson.schemanode.ChoiceNode):
-    pass
+class ChoiceNode(InternalMixin, yangson.schemanode.ChoiceNode):
+    def __init__(self) -> None:
+        super().__init__()
+        print("ChoicoeNode __init__()")
 
-class CaseNode(InternalNode, yangson.schemanode.CaseNode):
-    pass
+class CaseNode(InternalMixin, yangson.schemanode.CaseNode):
+    def __init__(self) -> None:
+        super().__init__()
+        print("CaseNode __init__()")
 
 class LeafNode(DataNode, TerminalNode, yangson.schemanode.LeafNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("LeafNode __init__()")
 
 class LeafListNode(SequenceNode, TerminalNode, yangson.schemanode.LeafListNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("LeafListNode __init__()")
 
 class AnyContentNode(DataNode, yangson.schemanode.AnyContentNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("AnyContentNode __init__()")
 
 class AnydataNode(AnyContentNode, yangson.schemanode.AnydataNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("AnydataNode __init__()")
 
 class AnyxmlNode(AnyContentNode, yangson.schemanode.AnyxmlNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("AnyxmlNode __init__()")
 
 class RpcActionNode(SchemaTreeNode, yangson.schemanode.RpcActionNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("RpcActionNode __init__()")
 
 class InputNode(InternalNode, DataNode, yangson.schemanode.InputNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("InputNode __init__()")
 
 class OutputNode(InternalNode, DataNode, yangson.schemanode.OutputNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("OutputNode __init__()")
 
 class NotificationNode(SchemaTreeNode, yangson.schemanode.NotificationNode):
-    pass
+    def __init__(self) -> None:
+        super().__init__()
+        print("NotificationNode __init__()")
 
 class SchemaTreeFactory:
     def create_tree(self, schemadata: yangson.schemadata.SchemaData) -> SchemaTreeNode:
