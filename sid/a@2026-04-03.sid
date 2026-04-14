@@ -1,0 +1,375 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "a",
+    "module-revision": "2026-04-03",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "b",
+        "module-revision": "2026-04-01"
+      },
+      {
+        "module-name": "c",
+        "module-revision": "2026-04-02"
+      },
+      {
+        "module-name": "ietf-yang-types",
+        "module-revision": "2025-12-22"
+      },
+      {
+        "module-name": "ietf-inet-types",
+        "module-revision": "2025-12-22"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "61000",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "a",
+        "status": "unstable",
+        "sid": "61000"
+      },
+      {
+        "namespace": "module",
+        "identifier": "a-sub",
+        "status": "unstable",
+        "sid": "61001"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "a-base",
+        "status": "unstable",
+        "sid": "61002"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "a-conditional",
+        "status": "unstable",
+        "sid": "61003"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "a-simple",
+        "status": "unstable",
+        "sid": "61004"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "complex",
+        "status": "unstable",
+        "sid": "61005"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "a-feature",
+        "status": "unstable",
+        "sid": "61006"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "a-feature-ident",
+        "status": "unstable",
+        "sid": "61007"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "a-feature-test",
+        "status": "unstable",
+        "sid": "61008"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "a-feature-tree",
+        "status": "unstable",
+        "sid": "61009"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "a-sub-feature",
+        "status": "unstable",
+        "sid": "61010"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a-sub:a-sub-data",
+        "status": "unstable",
+        "sid": "61011"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box",
+        "status": "unstable",
+        "sid": "61012"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/b-ref",
+        "status": "unstable",
+        "sid": "61013"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/conditional-scalar-vect",
+        "status": "unstable",
+        "sid": "61014"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips",
+        "status": "unstable",
+        "sid": "61015"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/add",
+        "status": "unstable",
+        "sid": "61016"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/add/input",
+        "status": "unstable",
+        "sid": "61017"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/add/output",
+        "status": "unstable",
+        "sid": "61018"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/ips",
+        "status": "unstable",
+        "sid": "61019"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/ips/interface",
+        "status": "unstable",
+        "sid": "61020"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/ips/ip",
+        "status": "unstable",
+        "sid": "61021"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/ips/packet-count",
+        "status": "unstable",
+        "sid": "61022"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/ips/remove",
+        "status": "unstable",
+        "sid": "61023"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/ips/remove/input",
+        "status": "unstable",
+        "sid": "61024"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/ips/ips/remove/output",
+        "status": "unstable",
+        "sid": "61025"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/measurements",
+        "status": "unstable",
+        "sid": "61026"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/optional-feature",
+        "status": "unstable",
+        "sid": "61027"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/optional-feature/name",
+        "status": "unstable",
+        "sid": "61028"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/pair",
+        "status": "unstable",
+        "sid": "61029"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/pair/x",
+        "status": "unstable",
+        "sid": "61030"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/pair/y",
+        "status": "unstable",
+        "sid": "61031"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/pairs",
+        "status": "unstable",
+        "sid": "61032"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/pairs/a",
+        "status": "unstable",
+        "sid": "61033"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/pairs/b",
+        "status": "unstable",
+        "sid": "61034"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:box/version",
+        "status": "unstable",
+        "sid": "61035"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:cas-date",
+        "status": "unstable",
+        "sid": "61036"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:cas-date/input",
+        "status": "unstable",
+        "sid": "61037"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:cas-date/input/expected",
+        "status": "unstable",
+        "sid": "61038"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:cas-date/input/new-value",
+        "status": "unstable",
+        "sid": "61039"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:cas-date/output",
+        "status": "unstable",
+        "sid": "61040"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:cas-date/output/old-or-current",
+        "status": "unstable",
+        "sid": "61041"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:get-date",
+        "status": "unstable",
+        "sid": "61042"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:get-date/input",
+        "status": "unstable",
+        "sid": "61043"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:get-date/output",
+        "status": "unstable",
+        "sid": "61044"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:get-date/output/date",
+        "status": "unstable",
+        "sid": "61045"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:reset",
+        "status": "unstable",
+        "sid": "61046"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:reset/input",
+        "status": "unstable",
+        "sid": "61047"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:reset/output",
+        "status": "unstable",
+        "sid": "61048"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:set-date",
+        "status": "unstable",
+        "sid": "61049"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:set-date/input",
+        "status": "unstable",
+        "sid": "61050"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:set-date/input/date",
+        "status": "unstable",
+        "sid": "61051"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:set-date/output",
+        "status": "unstable",
+        "sid": "61052"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:something-changed",
+        "status": "unstable",
+        "sid": "61053"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:something-changed/new-value-str",
+        "status": "unstable",
+        "sid": "61054"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:something-changed/time",
+        "status": "unstable",
+        "sid": "61055"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/a:something-changed/what",
+        "status": "unstable",
+        "sid": "61056"
+      }
+    ]
+  }
+}

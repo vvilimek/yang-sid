@@ -1,0 +1,39 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "c",
+    "module-revision": "2026-04-02",
+    "sid-file-status": "unpublished",
+    "assignment-range": [
+      {
+        "entry-point": "63000",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "c",
+        "status": "unstable",
+        "sid": "63000"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "c-identity",
+        "status": "unstable",
+        "sid": "63001"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "c-feature",
+        "status": "unstable",
+        "sid": "63002"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/c:simple",
+        "status": "unstable",
+        "sid": "63003"
+      }
+    ]
+  }
+}

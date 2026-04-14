@@ -1,0 +1,26 @@
+submodule a-sub {
+  yang-version 1.1;
+
+  belongs-to a {
+    prefix a-main;
+  }
+
+  import b {
+    prefix b-imp;
+    revision-date 2026-04-01;
+  }
+
+  revision 2026-04-03;
+
+  feature a-sub-feature;
+
+  leaf a-sub-data {
+    type string;
+  }
+
+  augment "/b-imp:compound" {
+    leaf additional {
+      type binary;
+    }
+  }
+}

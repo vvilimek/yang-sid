@@ -1,0 +1,154 @@
+module a {
+  yang-version 1.1;
+
+  prefix a;
+  namespace "http://example.com/a/main";
+
+  include a-sub;
+
+  import b {
+    prefix b-imp;
+    revision-date 2026-04-01;
+  }
+  import c {
+    prefix c-imp;
+  }
+
+  import ietf-yang-types {
+    prefix yang;
+    revision-date 2025-12-22;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+  revision 2026-04-03;
+
+  feature a-feature;
+  feature a-feature-tree;
+  feature a-feature-ident;
+  feature a-feature-test {
+    if-feature a-feature;
+  }
+
+  identity a-base;
+  identity a-simple {
+    base a-base;
+  }
+  identity complex {
+    base a-base;
+    base b-imp:b-derived;
+  }
+
+  identity a-conditional {
+    if-feature a-feature-ident;
+  }
+
+  container box {
+    container ips {
+      list ips {
+	key "interface ip";
+
+	leaf interface {
+	  type string;
+	}
+
+	leaf ip {
+	  type inet:ip-address;
+	}
+
+	leaf packet-count {
+	  type uint32;
+	}
+
+	action remove {
+
+	}
+      }
+
+      action add {
+      }
+    }
+
+    container pair {
+      uses c-imp:items;
+    }
+
+    leaf-list measurements {
+      type uint32;
+    }
+
+    leaf version {
+      type string;
+      if-feature a-feature-tree;
+    }
+
+    leaf-list conditional-scalar-vect {
+      type int64;
+      if-feature a-feature-tree;
+    }
+
+    list pairs {
+      key "a b";
+      leaf a { type uint32; }
+      leaf b { type uint32; }
+      if-feature a-feature-tree;
+    }
+
+    container optional-feature {
+      leaf name { type string; }
+      if-feature a-feature-tree;
+    }
+
+    leaf b-ref {
+      type b-imp:custom-type;
+    }
+  }
+
+  rpc reset;
+  rpc set-date {
+    input {
+      leaf date {
+	type yang:date;
+      }
+    }
+    // error with pyang
+    //output {}
+  }
+  rpc get-date {
+    // error with pyang
+    //input {}
+    output {
+      leaf date {
+	type yang:date;
+      }
+    }
+  }
+  rpc cas-date {
+    input {
+      leaf expected {
+	type yang:date;
+      }
+      leaf new-value {
+	type yang:date;
+      }
+    }
+    output {
+      leaf old-or-current {
+	type yang:date;
+      }
+    }
+  }
+
+  notification something-changed {
+    leaf time {
+      type yang:date-and-time;
+    }
+    leaf what {
+      type instance-identifier;
+    }
+    leaf new-value-str {
+      type string;
+    }
+  }
+}

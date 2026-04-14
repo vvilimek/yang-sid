@@ -1,0 +1,31 @@
+[project]
+name = "yang-sid"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+license = "LGPL-3.0-or-later"
+authors = [
+    { name = "Vojtech Vilimek", email = "vojtech.vilimek@nic.cz" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "yang-library",
+    "yangson",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.8,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+#yangson = { git = "https://github.com/vvilimek/yangson" }
+yang-library = { git = "https://github.com/vvilimek/yang-library" }
+yangson = { path = "../yangson/extension" }
+
+[dependency-groups]
+test = [
+    "pytest>=9.0.3",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

@@ -1,0 +1,57 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "b",
+    "module-revision": "2026-04-01",
+    "sid-file-status": "unpublished",
+    "assignment-range": [
+      {
+        "entry-point": "62000",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "b",
+        "status": "unstable",
+        "sid": "62000"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "b-base",
+        "status": "unstable",
+        "sid": "62001"
+      },
+      {
+        "namespace": "identity",
+        "identifier": "b-derived",
+        "status": "unstable",
+        "sid": "62002"
+      },
+      {
+        "namespace": "feature",
+        "identifier": "b-feature",
+        "status": "unstable",
+        "sid": "62003"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/b:compound",
+        "status": "unstable",
+        "sid": "62004"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/b:compound/name",
+        "status": "unstable",
+        "sid": "62005"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/b:compound/value",
+        "status": "unstable",
+        "sid": "62006"
+      }
+    ]
+  }
+}

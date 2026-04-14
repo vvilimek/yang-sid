@@ -1,0 +1,32 @@
+module b {
+  yang-version 1.1;
+
+  prefix b;
+  namespace "http://example.com/b/";
+
+  revision 2026-04-01;
+
+  feature b-feature;
+
+  identity b-base;
+  identity b-derived {
+    base b-base;
+  }
+
+  container compound {
+    leaf name {
+      type string;
+    }
+
+    leaf value {
+      type uint64;
+    }
+  }
+
+  typedef custom-type {
+    type string {
+      pattern "a+";
+    }
+  }
+
+}
