@@ -29,10 +29,16 @@
         "sid": "63002"
       },
       {
+        "namespace": "feature",
+        "identifier": "c-feature-impl",
+        "status": "unstable",
+        "sid": "63003"
+      },
+      {
         "namespace": "data",
         "identifier": "/c:simple",
         "status": "unstable",
-        "sid": "63003"
+        "sid": "63004"
       }
     ]
   }

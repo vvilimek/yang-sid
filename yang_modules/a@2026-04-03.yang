@@ -62,11 +62,30 @@ module a {
 	}
 
 	action remove {
+	  input {
+	    leaf interface {
+	      type string;
+	    }
+	  }
 
+	  output {
+	    leaf result {
+	      type string;
+	    }
+	  }
 	}
       }
 
       action add {
+	input {
+	  leaf interface {
+	    type string;
+	  }
+
+	  leaf ip {
+	    type string;
+	  }
+	}
       }
     }
 
@@ -103,6 +122,16 @@ module a {
     leaf b-ref {
       type b-imp:custom-type;
     }
+  }
+
+  container misc {
+    config false;
+    list runtime_pairs {
+      leaf x { type string; }
+      leaf y { type uint16; }
+    }
+    leaf-list names { type string; }
+    leaf simple-leaf { type empty; }
   }
 
   rpc reset;

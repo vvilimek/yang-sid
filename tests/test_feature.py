@@ -3,50 +3,50 @@ import yang_sid
 
 from pathlib import Path
 
-SID_DIR = Path(yang_sid.__file__).parent.parent.parent / "sid"
+MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
+SID_PATH = Path(yang_sid.__file__).parent.parent.parent / "sid"
 
-yang_lib = """
+YANG_LIB = """
 {
   "ietf-yang-library:modules-state": {
-    "module-set": [
+    "module": [
       {
         "name": "a",
-	    "revision": "2026-04-03",
-	    "namespace": "http://example.com/a/main",
-        "feature": [],
-	    "submodule": [
-            {
+        "revision": "2026-04-03",
+        "namespace": "http://example.com/a/main",
+        "feature": ["a-feature", "a-feature-tree", "a-feature-ident", "a-feature-test", "a-sub-feature"],
+        "submodule": [
+          {
             "name": "a-sub",
             "revision": "2026-04-03"
-        }
-	        ],
-	"conformance-type": "implement"
+          }
+        ],
+        "conformance-type": "implement"
       },
       {
-	"name": "b",
-	"revision": "2026-04-01",
-	"namespace": "http://example.com/b/",
-    "feature": [],
-	"conformance-type": "implement"
+        "name": "b",
+        "revision": "2026-04-01",
+        "namespace": "http://example.com/b/",
+        "conformance-type": "implement" 
       },
       {
-	"name": "c",
-	"revision": "2026-04-02",
-	"namespace": "http://example.com/c/",
-    "feature": [],
-	"conformance-type": "import"
+        "name": "c",
+        "revision": "2026-04-02",
+        "namespace": "http://example.com/c/",
+        "feature": ["c-feature-impl"],
+        "conformance-type": "import"
       },
       {
-	"name": "ietf-inet-types",
-	"revision": "2025-12-22",
-	"namespace": "urn:ietf:params:xml:ns:yang:ietf-inet-types",
-	"conformance-type": "import"
+        "name": "ietf-inet-types",
+        "revision": "2025-12-22",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-inet-types",
+        "conformance-type": "import"
       },
       {
-	"name": "ietf-yang-types",
-	"revision": "2025-12-22",
-	"namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-types",
-	"conformance-type": "import"
+        "name": "ietf-yang-types",
+        "revision": "2025-12-22",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-types",
+        "conformance-type": "import"
       }
     ],
     "module-set-id": "0"
@@ -56,44 +56,59 @@ yang_lib = """
 
 @pytest.fixture
 def schema_data():
-    model = yang_sid.DataModel(yang_lib)
-    model.load_sid_file(SID_DIR / "a@2026-04-03.sid")
-    model.load_sid_file(SID_DIR / "b@2026-04-01.sid")
-    model.load_sid_file(SID_DIR / "c@2025-04-02.sid")
-    return model.schema_data
+    model = yang_sid.DataModel(YANG_LIB, mod_path=MOD_PATH)
+    model.set_sid_path([SID_PATH])
+    schema_data = model.schema_data
+    model.load_module_sids(schema_data.modules_by_name["a"])
+    model.load_module_sids(schema_data.modules_by_name["b"])
+    model.load_module_sids(schema_data.modules_by_name["c"])
+    model.load_module_sids(schema_data.modules_by_name["ietf-inet-types"])
+    model.load_module_sids(schema_data.modules_by_name["ietf-yang-types"])
+    return schema_data
 
 def test_mod_c(schema_data):
-    mod_data = schema_data.module_by_sid[63000]
+    mod_data = schema_data.modules_by_sid[63000]
+    assert mod_data.yang_id == ("c", "2026-04-02")
+ 
+    # not implemented feature (of import module)
+    assert "c-feature" not in mod_data.sid_features
+    assert 63002 not in mod_data.features_by_sid
+    assert "c-feature" not in mod_data.features
+    assert 63002 not in schema_data.all_sids
 
-    assert mod_data.name == "c" and mod_data.revision == "2026-04-02"
-    assert schema_data.all_sids[63000] is mod_data
-    assert mod_data.sid == 63000
-    
+    # implemented feature (of import module)
+    assert mod_data.sid_features["c-feature-impl"] == 63003
+    assert mod_data.features_by_sid[63003] == "c-feature-impl"
+    assert "c-feature-impl" in mod_data.features
+    assert schema_data.all_sids[63003] == "c-feature-impl"
+ 
 def test_mod_b(schema_data):
-    mod_data = schema_data.module_by_sid[62000]
+    mod_data = schema_data.modules_by_sid[62000]
+    assert mod_data.yang_id == ("b", "2026-04-01")
 
-    assert mod_data.name == "b" and mod_data_revision == "2026-04-01"
-    assert schema_data.all_sids[62000] is mod_data
-    assert mod_data.sid == 62000
+    # not implemented feature (of implement module)
+    assert "b-feature" not in mod_data.sid_features
+    assert 62003 not in mod_data.features_by_sid
+    assert "b-feature" not in mod_data.features
+    assert 62003 not in schema_data.all_sids
 
 def test_mod_a(schema_data):
-    mod_data = schema_data.module_by_sid[61000]
+    mod_data = schema_data.modules_by_sid[61000]
+    assert mod_data.yang_id == ("a", "2026-04-03")
 
-    assert mod_data.name == "a" and mod_data.revision == "2026-04-03"
-    assert schema_data.all_sids[61000] is mod_data
-    assert mod_data.sid == 61000
+    # implemented
+    for (feat_name, feat_sid) in [("a-feature", 61006), ("a-feature-ident", 61007), ("a-feature-test", 61008), 
+                                  ("a-feature-tree", 61009)]:
+        assert mod_data.sid_features[feat_name] == feat_sid
+        assert mod_data.features_by_sid[feat_sid] == feat_name
+        assert feat_name in mod_data.features
+        assert schema_data.all_sids[feat_sid] == feat_name
 
-    assert len(mod_data.submodules) == 1
-    for submod in mod_data.submodules:
-        submod_data = schema_data.modules[submod]
-        assert submod_data.name == "a-sub" and submod_data.revisin == "2026-04-03"
-        assert schema_data.all_sids[61001] is submod_data
-        assert submod_data.sid == 61001
 
-def testi_ietf_mods(schema_data):
-    yang = schema_data.module_by_name["ietf-yang-types"]
-    inet = schema_data.module_by_name["ietf-inet-types"]
-
-    assert yang.sid == 1100
-    assert inet.sid == 1150
+    # submodule features are registered at main module ModuleData
+    (feat_name, feat_sid) = ("a-sub-feature", 61010)
+    assert mod_data.sid_features[feat_name] == feat_sid
+    assert mod_data.features_by_sid[feat_sid] == feat_name
+    assert feat_name in mod_data.features
+    assert schema_data.all_sids[feat_sid] == feat_name
 

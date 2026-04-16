@@ -7,6 +7,7 @@ module c {
   revision 2026-04-02;
 
   feature c-feature;
+  feature c-feature-impl;
 
   identity c-identity;
 
