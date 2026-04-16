@@ -1,0 +1,93 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "ietf-restconf",
+    "module-revision": "2017-01-26",
+    "sid-file-status": "unpublished",
+    "assignment-range": [
+      {
+        "entry-point": "68000",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-restconf",
+        "status": "unstable",
+        "sid": "68000"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors",
+        "status": "unstable",
+        "sid": "68001"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors/error",
+        "status": "unstable",
+        "sid": "68002"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors/error/error-app-tag",
+        "status": "unstable",
+        "sid": "68003"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors/error/error-info",
+        "status": "unstable",
+        "sid": "68004"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors/error/error-message",
+        "status": "unstable",
+        "sid": "68005"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors/error/error-path",
+        "status": "unstable",
+        "sid": "68006"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors/error/error-tag",
+        "status": "unstable",
+        "sid": "68007"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:errors/error/error-type",
+        "status": "unstable",
+        "sid": "68008"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:restconf",
+        "status": "unstable",
+        "sid": "68009"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:restconf/data",
+        "status": "unstable",
+        "sid": "68010"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:restconf/operations",
+        "status": "unstable",
+        "sid": "68011"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-restconf:restconf/yang-library-version",
+        "status": "unstable",
+        "sid": "68012"
+      }
+    ]
+  }
+}

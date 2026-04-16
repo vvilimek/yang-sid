@@ -1,0 +1,50 @@
+module yd {
+  yang-version 1.1;
+
+  prefix yd;
+  namespace "http://example.com/yd";
+
+  import ietf-restconf {
+    prefix rc;
+    revision-date 2017-01-26;
+  }
+
+  revision 2026-04-04;
+
+  rc:yang-data yangd {
+    container yd-box {
+      leaf version {
+	type string;
+      }
+
+      container mgmt {
+	leaf user {
+	  type string;
+	}
+	leaf access-rights {
+	  type string;
+	}
+      }
+
+      list ip {
+	key "interface ip";
+
+	leaf interface {
+	  type string;
+	}
+
+	leaf ip {
+	  type string;
+	}
+
+	leaf packet-count {
+	  type uint32;
+	}
+      }
+
+      leaf-list peers {
+	type string;
+      }
+    }
+  }
+}

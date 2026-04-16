@@ -1,0 +1,87 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "yd",
+    "module-revision": "2026-04-04",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "ietf-restconf",
+        "module-revision": "2017-01-26"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "69000",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "yd",
+        "status": "unstable",
+        "sid": "69000"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box",
+        "status": "unstable",
+        "sid": "69001"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/ip",
+        "status": "unstable",
+        "sid": "69002"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/ip/interface",
+        "status": "unstable",
+        "sid": "69003"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/ip/ip",
+        "status": "unstable",
+        "sid": "69004"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/ip/packet-count",
+        "status": "unstable",
+        "sid": "69005"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/mgmt",
+        "status": "unstable",
+        "sid": "69006"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/mgmt/access-rights",
+        "status": "unstable",
+        "sid": "69007"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/mgmt/user",
+        "status": "unstable",
+        "sid": "69008"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/peers",
+        "status": "unstable",
+        "sid": "69009"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/yd:yd-box/version",
+        "status": "unstable",
+        "sid": "69010"
+      }
+    ]
+  }
+}
