@@ -1,0 +1,69 @@
+{
+  "ietf-sid-file:sid-file": {
+    "module-name": "example-module",
+    "module-revision": "2020-06-17",
+    "sid-file-status": "unpublished",
+    "dependency-revision": [
+      {
+        "module-name": "ietf-yang-structure-ext",
+        "module-revision": "2020-06-17"
+      }
+    ],
+    "assignment-range": [
+      {
+        "entry-point": "65000",
+        "size": "100"
+      }
+    ],
+    "item": [
+      {
+        "namespace": "module",
+        "identifier": "example-module",
+        "status": "unstable",
+        "sid": "65000"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-module:address-book",
+        "status": "unstable",
+        "sid": "65001"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-module:address-book/address",
+        "status": "unstable",
+        "sid": "65002"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-module:address-book/address/city",
+        "status": "unstable",
+        "sid": "65003"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-module:address-book/address/first",
+        "status": "unstable",
+        "sid": "65004"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-module:address-book/address/last",
+        "status": "unstable",
+        "sid": "65005"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-module:address-book/address/state",
+        "status": "unstable",
+        "sid": "65006"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-module:address-book/address/street",
+        "status": "unstable",
+        "sid": "65007"
+      }
+    ]
+  }
+}

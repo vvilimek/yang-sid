@@ -1,0 +1,48 @@
+module struct {
+  yang-version 1.1;
+
+  prefix struct;
+  namespace "http://example.com/struct";
+
+  import ietf-yang-structure-ext {
+    prefix sx;
+    revision-date 2020-06-17;
+  }
+
+  revision 2026-04-05;
+
+  sx:structure st {
+    leaf name {
+      type string;
+    }
+
+    container pair {
+      leaf x {
+	type int16;
+      }
+      leaf y {
+	type int16;
+      }
+    }
+
+    list ip {
+      key "interface ip";
+
+      leaf interface {
+	type string;
+      }
+
+      leaf ip {
+	type string;
+      }
+
+      leaf packet-count {
+	type uint32;
+      }
+    }
+
+    leaf-list values {
+      type uint32;
+    }
+  }
+}
