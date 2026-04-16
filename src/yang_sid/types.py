@@ -4,6 +4,7 @@
 
 from typing import NewType, Union
 
+
 SID = NewType("SID", int)
 
 class AbsoluteSID(int):

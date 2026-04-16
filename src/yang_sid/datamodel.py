@@ -2,9 +2,12 @@ import yangson.datamodel
 import yangson.schemadata
 import yangson.schemanode
 
-from .schema import SchemaTreeFactory
-from .schema_data import SchemaDataFactory
+from .schemanode import SchemaTreeFactory
+from .schemadata import SchemaDataFactory, ModuleData
+from .sid_file import SidFile
 
+from pathlib import Path
+from collections.abc import Iterable
 from typing import Optional
 
 
@@ -12,7 +15,7 @@ class DataModel(yangson.datamodel.DataModel):
     """Basic user-level entry point to yang-sid library."""
 
     def __init__(self, yltxt: str, mod_path: tuple[str] = (".",),
-                 description: Optional[str] = None, 
+                 description: Optional[str] = None,
                  data_factory = None, #: Optional[yangson.schemadata.SchemaDataFactory] = None,
                  tree_factory = None) -> None: #: Optional[yangson.schemanode.SchemaTreeFactory] = None) -> None:
         """Initialize the class instance.
@@ -41,5 +44,38 @@ class DataModel(yangson.datamodel.DataModel):
             tree_factory = SchemaTreeFactory()
 
         return super().__init__(yltxt, mod_path, description, data_factory, tree_factory)
- 
+
+    def set_sid_path(self, sid_path: Iterable[str]) -> None:
+        self.schema_data.set_sid_path(sid_path)
+
+    def load_sid_file(self, file: str) -> SidFile:
+        file = Path(file)
+        parsed_file = self.schema_data.load_sid_file(file)
+        self.schema_data.apply_sid_file(parsed_file)
+        self.schema.apply_sid_file(parsed_file)
+        return parsed_file
+
+    def load_all_module_sids(self) -> None:
+        for mod_id in self.schema_data.implement.items():
+            mod = self.schema_data.modules[mod_id]
+            self.load_module_sids(mod)
+
+    def load_all_sid_files(self) -> None:
+        self.load_all_module_sids()
+
+    def load_module_sids(self, mod_data: ModuleData) -> bool:
+        file = self.schema_data.find_sid_file(mod_data)
+        if file is None:
+            return False
+        parsed = self.load_sid_file(file)
+        for dep_rev in parsed.dependency_revision.values():
+            dep_mod_data = self.schema_data.modules[(dep_rev.name, dep_rev.revision)]
+            # There must not be cycles in the module imports
+            if not self.load_module_sids(dep_mod_data):
+                return False
+        return True
+
+    def apply_sid_file(self, sid_file: SidFile) -> None:
+        self.schema_data.apply_sid_file(sid_file)
+        self.schema.apply_sid_file(sid_file)
 
