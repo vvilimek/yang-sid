@@ -1,5 +1,5 @@
 [project]
-name = "yang-sid"
+name = "yang_sid"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -18,9 +18,8 @@ requires = ["uv_build>=0.9.8,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.uv.sources]
-#yangson = { git = "https://github.com/vvilimek/yangson" }
+yangson = { git = "https://github.com/vvilimek/yangson" }
 yang-library = { git = "https://github.com/vvilimek/yang-library" }
-yangson = { path = "../yangson/extension" }
 
 [dependency-groups]
 test = [
