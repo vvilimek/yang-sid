@@ -8,11 +8,10 @@ import yang_sid
 import yangson.instance
 import yangson.typealiases
 
-from typing import Iterator, Iterable, ClassVar, Union, TYPE_CHECKING, cast
+from typing import Iterator, Iterable, Optional, Any, ClassVar, Union, TYPE_CHECKING, cast, TypeVar, overload, Literal
 from enum import Enum
 from pathlib import Path
 from dataclasses import dataclass, field
-
 
 from yang_library import *
 
@@ -20,20 +19,29 @@ from .types import SID
 from ._sid_file_types import *
 
 if TYPE_CHECKING:
-    from .schema_data import ModuleData
+    from .schemadata import ModuleData
 
+"""
+
+"""
 # TODO implement checks of validity / consistency
 
 class SidFileStatus(Enum):
+    """"""
+
     UNPUBLISHED = "unpublished"
     PUBLISHED = "published"
 
 class ItemStatus(Enum):
+    """"""
+
     STABLE = "stable"
     UNSTABLE = "unstable"
     OBSOLETE = "obsolete"
 
 class ItemNamespace(Enum):
+    """"""
+
     MODULE = "module"
     IDENTITY = "identity"
     FEATURE = "feature"
@@ -41,16 +49,22 @@ class ItemNamespace(Enum):
 
 @dataclass
 class ModuleDependency:
+    """"""
+
     name: yangson.typealiases.YangIdentifier
     revision: yangson.typealiases.RevisionDate
 
 @dataclass
 class AssignmentRange:
+    """"""
+
     entry_point: SID
     size: int
 
 @dataclass
 class ItemAssignment:
+    """"""
+
     # TODO wouldn't be SidFileItem more readable?
     namespace: ItemNamespace
     identifier: Union[str, yangson.typealiases.YangIdentifier]
@@ -59,6 +73,8 @@ class ItemAssignment:
 
 @dataclass
 class SidFile:
+    """"""
+
     module: yangson.typealiases.YangIdentifier
     revision: Optional[yangson.typealiases.RevisionDate]
     version: int
@@ -70,6 +86,8 @@ class SidFile:
 
 @dataclass
 class SidRepository:
+    """"""
+
     files: dict[str, SidFile] = field(default_factory=lambda: dict())
     global_mapping: dict[SID, ItemAssignment] = field(default_factory=lambda: dict())
 
@@ -85,26 +103,48 @@ class SidRepository:
     def check_sid_file(self, data: yangson.schemadata.SchemaData, sid_file: SidFile) -> bool:
         return False
 
-def _get_list_raw(inst: yangson.instance.InstanceNode, name: str) -> yangson.typealiases.RawList:
+@overload
+def _get_list_raw(inst: SidFileDict, name: Literal["dependency-revision"]) -> list[DependencyRevisionDict]: ...
+
+@overload
+def _get_list_raw(inst: SidFileDict, name: Literal["assignment-range"]) -> list[AssignmentRangeDict]: ...
+
+
+def _get_list_raw(inst: SidFileDict, name: Literal["dependency-revision"] | Literal["assignment-range"]) -> list[DependencyRevisionDict] | list[AssignmentRangeDict]:
     try:
         lst = inst[name]
-        return cast(yangson.typealiases.RawList, lst.raw_value())
+        if name == "dependency-revision":
+            return cast(list[DependencyRevisionDict], lst.raw_value())
+        elif name == "assignment-range":
+            return cast(list[AssignmentRangeDict], lst.raw_value())
+        else:
+            assert False
     except yangson.exceptions.NonexistentInstance:
         return []
     except KeyError:
         return []
 
-def _get_mod_rev(instance: yangson.instance.InstanceNode) -> Optional[str]:
+def _get_mod_rev(instance: SidFileDict) -> Optional[str]:
     try:
-        return cast(str, instance["module-revision"].value)
+        return instance["module-revision"].value
     except yangson.exceptions.NonexistentInstance:
         return None
 
+def _get_descr(instance: SidFileDict) -> str:
+    try:
+        return instance["description"].value
+    except yangson.exceptions.NonexistentInstance:
+        return ""
+
 class SidFileLoader:
+    """
+
+    """
+
     # same as uytc.core.yang_library.YangLibrary RFC_MODEL_DIR
     RFC_MODEL_DIR = Path(yang_sid.__file__).parent / "yang_modules"
     SID_FILE_MODEL: ClassVar[yangson.datamodel.DataModel] = yangson.datamodel.DataModel.from_file(
-        RFC_MODEL_DIR / 'ietf-sid-file-library.json', mod_path = (RFC_MODEL_DIR, '.')
+        str(RFC_MODEL_DIR / 'ietf-sid-file-library.json'), mod_path = (str(RFC_MODEL_DIR), '.')
         )
 
     #PATTERN_NO_REV: ClassVar[str] = "^{module.name}\\.sid$"
@@ -114,18 +154,22 @@ class SidFileLoader:
 
     @classmethod
     def load_sid_file(cls, module: yangson.schemadata.ModuleData, sid_path: Iterable[str]) -> SidFile:
-        filename = cls._find_sid_file(module, sid_path, ext_filename)
+        """"""
+
+        filename = cls.find_sid_file(module, sid_path)
         if not filename:
             raise ValueError(f"SID File for YANG module {module.yang_id[0]} was not found.")
 
         sid_file = cls.parse_sid_file(filename)
         # TODO module revision None/""
-        if sid_file.module != module.name or sid_file.revision != module.revision:
+        if (sid_file.module, sid_file.revision) != module.yang_id:
             raise ValueError("Wrong SID File for a given module")
         return sid_file
 
     @classmethod
     def find_sid_file(cls, module: yangson.schemadata.ModuleData, sid_path: Iterable[str]) -> Optional[Path]:
+        """"""
+
         pattern_no_rev = re.compile(cls.PATTERN_NO_REV_EXT.format(name=module.yang_id[0]))
         pattern_with_rev = re.compile(cls.PATTERN_WITH_REV_EXT.format(name=module.yang_id[0], revision=module.yang_id[1]))
 
@@ -143,7 +187,9 @@ class SidFileLoader:
         return None
 
     @classmethod
-    def parse_sid_file(cls, file: str) -> SidFile:
+    def parse_sid_file(cls, file: Path) -> SidFile:
+        """"""
+
         with open(file, mode='r', encoding="utf-8") as fd:
             raw = json.load(fd)
 
@@ -161,21 +207,21 @@ class SidFileLoader:
         version = sid_file_cont["sid-file-version"].value
         revision = _get_mod_rev(sid_file_cont)
         status = SidFileStatus(sid_file_cont["sid-file-status"].value)
-        description = sid_file_cont["description"].value if "description" in sid_file_cont else ""
+        description = _get_descr(sid_file_cont)
 
         # yangson uses empty string for revisionless modules
         main_mod_id: yangson.typealiases.ModuleId = (module, revision
                 if revision is not None else "")
 
-        dependencies: dict[yangson.typealiases.YangIdentifier, ModuleData] = {}
-        for dep_dict in cast(list[DependencyRevision], _get_list_raw(sid_file_cont, "dependency-revision")):
+        dependencies: dict[yangson.typealiases.YangIdentifier, ModuleDependency] = {}
+        for dep_dict in _get_list_raw(sid_file_cont, "dependency-revision"):
             # the dep's attribute "module-revision" is required to be present by YANG (and checked by yangson)
             # TODO module-revision ""/None
             dep = ModuleDependency(dep_dict["module-name"], dep_dict["module-revision"])
             dependencies[dep.name] = dep
 
         all_ranges: list[AssignmentRange] = []
-        for asgn_range in cast(list[AssignmentRangeDict], _get_list_raw(sid_file_cont, "assignment-range")):
+        for asgn_range in _get_list_raw(sid_file_cont, "assignment-range"):
             all_ranges.append(AssignmentRange(SID(asgn_range["entry-point"]), asgn_range["size"]))
 
         all_ranges.sort(key=lambda asgn_range: asgn_range.entry_point)
