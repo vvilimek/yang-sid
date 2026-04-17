@@ -1,7 +1,17 @@
+# SPDX-FileCopyrightText: CZ.NIC z.s.p.o.
+#
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 import yang_sid
 import pytest
 
 from pathlib import Path
+
+"""
+Test desciption
+
+
+"""
 
 MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
 SID_PATH = Path(yang_sid.__file__).parent.parent.parent / "sid"

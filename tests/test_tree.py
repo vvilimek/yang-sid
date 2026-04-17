@@ -1,7 +1,24 @@
+# SPDX-FileCopyrightText: CZ.NIC z.s.p.o.
+#
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 import pytest
 import yang_sid
 
 from pathlib import Path
+
+"""
+Test description
+
+Test suite for verifying SID assignment for schema nodes of configuration or operation state.
+We forcus on `sid` and `children_by_sid` attributes of schema nodes and `all_sids` attribute of schema data.
+
+Related RFC are document [RFC7950] defining all the schema node types and document [RFC8342] containing
+terms configuration and operational state.
+
+RFC7950: The YANG 1.1 Data Modeling Language
+RFC8342: Network Management Datastore Architecture (NMDA)
+"""
 
 MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
 SID_PATH = Path(yang_sid.__file__).parent.parent.parent / "sid"
@@ -27,7 +44,7 @@ YANG_LIB = """
         "name": "b",
         "revision": "2026-04-01",
         "namespace": "http://example.com/b/",
-        "conformance-type": "implement" 
+        "conformance-type": "implement"
       },
       {
         "name": "c",
@@ -60,7 +77,7 @@ def data_model():
     model.set_sid_path([SID_PATH])
     model.load_all_module_sids()
     return model
- 
+
 def test_mod_b(data_model):
     schema_data = data_model.schema_data
     schema = data_model.schema

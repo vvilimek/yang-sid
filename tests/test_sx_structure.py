@@ -1,7 +1,20 @@
+# SPDX-FileCopyrightText: CZ.NIC z.s.p.o.
+#
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 import pytest
 import yang_sid
 
 from pathlib import Path
+
+"""
+Test description
+
+Test suite for verifying correct SID assignment for sx:structure and it's children.
+Definition of sx:structure extension is in referenced document [RFC8791].
+
+RFC8791: YANG Data Structure Extensions
+"""
 
 MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
 SID_PATH = Path(yang_sid.__file__).parent.parent.parent / "sid"

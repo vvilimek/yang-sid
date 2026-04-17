@@ -4,7 +4,6 @@
 
 from typing import NewType, Union
 
-
 SID = NewType("SID", int)
 
 class AbsoluteSID(int):
@@ -13,5 +12,5 @@ class AbsoluteSID(int):
 
 class RelativeSID(int):
     def to_sid(self, base: Union[AbsoluteSID, int]) -> SID:
-        return SID(base.to_sid() + int(self))
+        return SID(AbsoluteSID(base).to_sid() + int(self))
 
