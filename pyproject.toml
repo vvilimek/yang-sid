@@ -19,7 +19,7 @@ build-backend = "uv_build"
 
 [tool.uv.sources]
 yangson = { git = "https://github.com/vvilimek/yangson" }
-yang-library = { git = "https://github.com/vvilimek/yang_library" }
+yang-library = { git = "https://github.com/vvilimek/yang-library" }
 
 [dependency-groups]
 test = [
