@@ -19,10 +19,11 @@ build-backend = "uv_build"
 
 [tool.uv.sources]
 yangson = { git = "https://github.com/vvilimek/yangson" }
-yang-library = { git = "https://github.com/vvilimek/yang-library" }
+yang-library = { git = "https://github.com/vvilimek/yang_library" }
 
 [dependency-groups]
 test = [
+    "mypy>=1.20.1",
     "pytest>=9.0.3",
 ]
 
