@@ -10,11 +10,14 @@ from yangson.typealiases import QualName, ModuleId, YangIdentifier
 
 from pathlib import Path
 from collections.abc import Iterable, Mapping
-from typing import ClassVar, Any, Union, Optional
+from typing import ClassVar, Any, Union, Optional, TYPE_CHECKING
 
 from .sid_file import SidRepository, SidFile, SidFileLoader, ItemNamespace
-from .schemanode import SchemaNode
 from .types import SID
+
+if TYPE_CHECKING:
+    from .schemanode import SchemaNode
+
 
 """
 Essential YANG schema structures and methods.
@@ -82,7 +85,7 @@ class SchemaData(yangson.schemadata.SchemaData):
         """Mapping from SID to associated identity."""
         self.sid_identities: dict[QualName, SID] = {}
         """Mapping from all implemented identities to their SIDs."""
-        self.all_sids: dict[SID, Union[SchemaNode, QualName, str, ModuleData]] = {}
+        self.all_sids: dict[SID, Union["SchemaNode", QualName, str, ModuleData]] = {}
         """Library-global mapping of all known SIDs to related YANG item."""
 
     def set_sid_path(self, sid_path: Iterable[str]) -> None:
@@ -120,6 +123,7 @@ class SchemaData(yangson.schemadata.SchemaData):
             match item.namespace:
                 case ItemNamespace.MODULE:
                     # TODO submodule revision
+                    # TODO do not assign SID for not implemented (import only) modules and submodules
                     rev = sid_file.revision if sid_file.revision else ""
                     mod_data = self.modules[(item.identifier, rev)]
                     mod_data.sid = item.sid
@@ -127,6 +131,8 @@ class SchemaData(yangson.schemadata.SchemaData):
                     self.all_sids[item.sid] = mod_data
                 case ItemNamespace.IDENTITY:
                     qual_name = (item.identifier, sid_file.module)
+                    if qual_name not in self.identity_adjs:
+                        continue
                     self.identities_by_sid[item.sid] = qual_name
                     self.all_sids[item.sid] = qual_name
                     self.sid_identities[qual_name] = item.sid
@@ -145,6 +151,23 @@ class SchemaData(yangson.schemadata.SchemaData):
                     self.all_sids[item.sid] = item.identifier
                 case _:
                     pass
+
+    def copy_sids_from(self, source: "SchemaData") -> None:
+        self.sid_path = source.sid_path
+
+        # Beware of the sharing between self and source of sid_repository and modules_by_sid!
+        self.sid_repository = source.sid_repository
+        # TODO: can a module be imported/included conditionally?
+        self.modules_by_sid = source.modules_by_sid
+
+        self.sid_identities = {name: sid for (name, sid) in source.sid_identities.items() if name in self.identity_adjs}
+        for (name, sid) in self.sid_identities.items():
+            self.all_sids[sid] = name
+
+        for mod in self.modules.values():
+            compl = source.modules[mod.yang_id]
+            mod.sid = compl.sid
+            self.modules_by_sid[compl.sid] = mod
 
 class SchemaDataFactory:
     """Factory creating SID-aware schema data."""

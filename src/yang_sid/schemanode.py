@@ -20,7 +20,7 @@ from .sid_file import SidFile, ItemNamespace
 from typing import Optional, cast
 
 dbg_logger = logging.getLogger("yang_sid.schema INIT")
-dbg_logger.setLevel(logging.DEBUG)
+dbg_logger.setLevel(logging.CRITICAL)
 
 logger = logging.getLogger(__name__)
 
@@ -204,19 +204,57 @@ class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
 
             # TODO: Test RPC, ACTION, NOTIFICATION, YANG_DATA, SX_STRUCTURE
             if not self.schema_data:
-                raise ValueError("Schema tree must have access to schema data to set SID numbers.")
-            route = self.schema_data.path2route(item.identifier)
+                raise ValueError("Schema tree node must have access to schema data to set SID numbers.")
+            route = self.schema_data.nid2route(item.identifier, self)
+            if not route:
+                raise ValueError(item.identifier)
             node = self.get_schema_descendant(route)
-            if not self.schema_data:
-                raise ValueError("Schema tree node must have access to schema data to add SID numbers.")
             if node:
                 assert isinstance(node, SchemaNode), "Code invariant broken, expected schema node with SID"
                 node.sid = item.sid
                 self.schema_data.all_sids[item.sid] = node
                 if node.parent:
-                    node.parent.children_by_sid[item.sid] = node
+                    if isinstance(node.parent, CaseNode):
+                        case = node.parent
+                        choice = node.parent.parent
+                        choice_parent = node.parent.parent.parent
+
+                        case.children_by_sid[item.sid] = node
+                        choice.children_by_sid[item.sid] = node
+                        if choice_parent:
+                            choice_parent.children_by_sid[item.sid] = node
+                    else:
+                        node.parent.children_by_sid[item.sid] = node
             else:
                 logger.warning(f"Unsupported node identified by {item.identifier}")
+
+    def copy_sids_from(self, source: "SchemaTreeNode", schema_data: SchemaData) -> None:
+        node = self
+        foreign = source
+
+        while node is not None:
+            node.sid = foreign.sid
+            schema_data.all_sids[node.sid] = node
+
+            if isinstance(node, InternalNode) and len(node.children) > 0:
+                node.children_by_sid = {sid: node.get_child(*child.qual_name) for (sid, child) in foreign.children_by_sid.items()
+                                        if child.qual_name in map(lambda n: n.qual_name, node.children)}
+                node = node.children[0]
+                foreign = foreign.get_child(*node.qual_name)
+                assert foreign is not None
+            else:
+                last = node
+                node = node.parent
+                foreign = foreign.parent
+                while node and node.children.index(last) + 1 == len(node.children):
+                    last = node
+                    node = node.parent
+                    foreign = foreign.parent
+
+                if node:
+                    node = node.children[node.children.index(last) + 1]
+                    foreign = foreign.get_child(*node.qual_name)
+                    assert foreign is not None
 
     def _sx_structure_stmt(self, stmt: Statement, sctx: SchemaContext) -> None:
         """Handle ietf-yang-structure-ext:structure statement."""
