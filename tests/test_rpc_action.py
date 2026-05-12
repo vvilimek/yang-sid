@@ -78,43 +78,43 @@ def test_mod_a_rpc(data_model):
     id = "/a:reset"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61056
-    assert schema_data.all_sids[61056] is node
+    assert node.sid == 61059
+    assert schema_data.all_sids[61059] is node
     inp = node.get_schema_descendant([("input", "a")])
-    assert inp.sid == 61057
-    assert schema_data.all_sids[61057] is inp
+    assert inp.sid == 61060
+    assert schema_data.all_sids[61060] is inp
     outp = node.get_schema_descendant([("output", "a")])
-    assert outp.sid == 61058
-    assert schema_data.all_sids[61058] is outp
-    assert node.children_by_sid == {61057: inp, 61058: outp}
+    assert outp.sid == 61061
+    assert schema_data.all_sids[61061] is outp
+    assert node.children_by_sid == {61060: inp, 61061: outp}
 
     id = "/a:cas-date"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61040
-    assert schema_data.all_sids[61040] is node
+    assert node.sid == 61043
+    assert schema_data.all_sids[61043] is node
 
     inp = node.get_schema_descendant([("input", "a")])
-    assert inp.sid == 61041
-    assert schema_data.all_sids[61041] is inp
+    assert inp.sid == 61044
+    assert schema_data.all_sids[61044] is inp
     outp = node.get_schema_descendant([("output", "a")])
-    assert outp.sid == 61044
-    assert schema_data.all_sids[61044] is outp
+    assert outp.sid == 61047
+    assert schema_data.all_sids[61047] is outp
 
     in_expect = inp.get_schema_descendant([("expected" ,"a")])
-    assert in_expect.sid == 61042
-    assert schema_data.all_sids[61042] is in_expect
+    assert in_expect.sid == 61045
+    assert schema_data.all_sids[61045] is in_expect
     assert inp.children_by_sid == {
-            61042: in_expect,
-            61043: inp.get_schema_descendant([("new-value", "a")])
+            61045: in_expect,
+            61046: inp.get_schema_descendant([("new-value", "a")])
             }
 
     out_old_curr = outp.get_schema_descendant([("old-or-current", "a")])
-    assert out_old_curr.sid == 61045
-    assert schema_data.all_sids[61045] is out_old_curr
-    assert outp.children_by_sid == {61045: out_old_curr}
+    assert out_old_curr.sid == 61048
+    assert schema_data.all_sids[61048] is out_old_curr
+    assert outp.children_by_sid == {61048: out_old_curr}
     
-    assert node.children_by_sid == {61041: inp, 61044: outp}
+    assert node.children_by_sid == {61044: inp, 61047: outp}
 
 
 def test_mod_a_action(data_model):

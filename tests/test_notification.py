@@ -69,25 +69,26 @@ def test_mod_a_notification(data_model):
     schema_data = data_model.schema_data
     schema = data_model.schema
 
+    #breakpoint()
     id = "/a:something-changed"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61063
-    assert schema_data.all_sids[61063] is node
+    assert node.sid == 61066
+    assert schema_data.all_sids[61066] is node
     time = node.get_schema_descendant([("time", "a")])
-    assert time.sid == 61065
-    assert schema_data.all_sids[61065] is time
+    assert time.sid == 61068
+    assert schema_data.all_sids[61068] is time
     what = node.get_schema_descendant([("what", "a")])
-    assert what.sid == 61066
-    assert schema_data.all_sids[61066] is what
+    assert what.sid == 61069
+    assert schema_data.all_sids[61069] is what
     new_value_str = node.get_schema_descendant([("new-value-str", "a")])
-    assert new_value_str.sid == 61064
-    assert schema_data.all_sids[61064] is new_value_str
+    assert new_value_str.sid == 61067
+    assert schema_data.all_sids[61067] is new_value_str
 
     assert node.children_by_sid == {
-            61064: new_value_str,
-            61065: time,
-            61066: what,
+            61067: new_value_str,
+            61068: time,
+            61069: what,
             }
 
 
