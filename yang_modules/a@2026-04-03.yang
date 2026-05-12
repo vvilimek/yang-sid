@@ -76,6 +76,17 @@ module a {
 	}
       }
 
+      choice exclusion {
+	case simple {
+	  leaf x-a { type string; }
+	}
+
+	case complex {
+	  leaf x-b { type uint32; }
+	  leaf x-c { type int16; }
+	}
+      }
+
       action add {
 	input {
 	  leaf interface {
