@@ -179,9 +179,9 @@ class GroupNode(yangson.schemanode.GroupNode, InternalNode):
 class YangData(yangson.schemanode.YangData, GroupNode):
     """Standard ietf-restconf:yang-data node."""
 
-    def __init__(self) -> None:
+    def __init__(self, sctx: Optional[SchemaContext] = None) -> None:
         """Initialize the class instance."""
-        super().__init__()
+        super().__init__(sctx)
         dbg_logger.debug(f"YangData __init__() {self.__class__.__name__}")
 
 class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
@@ -296,7 +296,7 @@ class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
 
         # The if-feature statement are to be ignored, we simply enable all possible feature
         yd_sctx = SchemaContext(yd_sch_data, sctx.default_ns, sctx.text_mid)
-        yang_data = YangData()
+        yang_data = YangData(yd_sctx)
         self._handle_child(yang_data, stmt, yd_sctx)
 
     # _augment_stmt works without overriding, the Structure is derived from yangson.schemanode.Structure
