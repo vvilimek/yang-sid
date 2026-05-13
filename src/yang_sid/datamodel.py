@@ -71,6 +71,7 @@ class DataModel(yangson.datamodel.DataModel):
     def set_sid_path(self, sid_path: Iterable[str]) -> None:
         """Set search path for SID Files."""
 
+        self.complete_model.schema_data.set_sid_path(sid_path)
         self.schema_data.set_sid_path(sid_path)
 
     def load_sid_file(self, file: Union[str, Path]) -> SidFile:

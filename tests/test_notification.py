@@ -69,7 +69,6 @@ def test_mod_a_notification(data_model):
     schema_data = data_model.schema_data
     schema = data_model.schema
 
-    #breakpoint()
     id = "/a:something-changed"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)

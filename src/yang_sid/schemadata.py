@@ -162,12 +162,24 @@ class SchemaData(yangson.schemadata.SchemaData):
 
         self.sid_identities = {name: sid for (name, sid) in source.sid_identities.items() if name in self.identity_adjs}
         for (name, sid) in self.sid_identities.items():
+            self.identities_by_sid[sid] = name
             self.all_sids[sid] = name
 
         for mod in self.modules.values():
             compl = source.modules[mod.yang_id]
             mod.sid = compl.sid
             self.modules_by_sid[compl.sid] = mod
+            self.all_sids[compl.sid] = mod
+
+            for feature in mod.features:
+                sid = compl.sid_features.get(feature)
+                # The SID for given module might not have been yet loaded
+                if not sid:
+                    continue
+                sid = compl.sid_features[feature]
+                mod.sid_features[feature] = sid
+                mod.features_by_sid[sid] = feature
+                self.all_sids[sid] = feature
 
 class SchemaDataFactory:
     """Factory creating SID-aware schema data."""

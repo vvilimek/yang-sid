@@ -63,11 +63,11 @@ def schema_data():
     model = yang_sid.DataModel(YANG_LIB, mod_path=MOD_PATH)
     model.set_sid_path([SID_PATH])
     schema_data = model.schema_data
-    model.load_module_sids(schema_data.modules_by_name["a"])
-    model.load_module_sids(schema_data.modules_by_name["b"])
-    model.load_module_sids(schema_data.modules_by_name["c"])
-    model.load_module_sids(schema_data.modules_by_name["ietf-inet-types"])
-    model.load_module_sids(schema_data.modules_by_name["ietf-yang-types"])
+    assert model.load_module_sids(schema_data.modules_by_name["a"])
+    assert model.load_module_sids(schema_data.modules_by_name["b"])
+    assert model.load_module_sids(schema_data.modules_by_name["c"])
+    assert model.load_module_sids(schema_data.modules_by_name["ietf-inet-types"])
+    assert model.load_module_sids(schema_data.modules_by_name["ietf-yang-types"])
     return schema_data
 
 def test_mod_c(schema_data):

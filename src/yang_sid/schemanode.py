@@ -239,6 +239,16 @@ class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
             if isinstance(node, InternalNode) and len(node.children) > 0:
                 node.children_by_sid = {sid: node.get_child(*child.qual_name) for (sid, child) in foreign.children_by_sid.items()
                                         if child.qual_name in map(lambda n: n.qual_name, node.children)}
+                for choice in foreign.children:
+                    if not isinstance(choice, ChoiceNode):
+                        continue
+                    for sid, foreign_child in choice.children_by_sid.items():
+                        choice = foreign_child.parent.parent
+                        case = foreign_child.parent
+                        route = [choice.qual_name, case.qual_name, foreign_child.qual_name]
+                        local_child = node.get_schema_descendant(route)
+                        node.children_by_sid[sid] = local_child
+
                 node = node.children[0]
                 foreign = foreign.get_child(*node.qual_name)
                 assert foreign is not None
@@ -417,7 +427,8 @@ class RpcActionNode(yangson.schemanode.RpcActionNode, GroupNode):
         """Dispatch actions for substatements of `stmt`."""
         self._add_child(InputNode(sctx.default_ns))
         self._add_child(OutputNode(sctx.default_ns))
-        super()._handle_substatements(stmt, sctx)
+        # skip the yangson.schemanode.RpcActionNode._handle_substatements()
+        super(yangson.schemanode.SchemaTreeNode, self)._handle_substatements(stmt, sctx)
 
 class InputNode(yangson.schemanode.InputNode, InternalNode):
     """RPC or action input node with SIDs."""

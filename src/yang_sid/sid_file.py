@@ -97,9 +97,6 @@ class SidRepository:
     def __contains__(self, module: Any) -> bool:
         return module in self.files
 
-    def load_sid_file(self, data: yangson.schemadata.SchemaData, module: yangson.schemadata.ModuleData) -> None:
-        pass
-
     def check_sid_file(self, data: yangson.schemadata.SchemaData, sid_file: SidFile) -> bool:
         return False
 
@@ -150,7 +147,7 @@ class SidFileLoader:
     #PATTERN_NO_REV: ClassVar[str] = "^{module.name}\\.sid$"
     #PATTERN_WITH_REV: ClassVar[str] = "^{module.name}(@{module.revision})?\\.sid$"
     PATTERN_NO_REV_EXT: ClassVar[str] = "^{name}(\\.[0-9]+)?\\.sid$"
-    PATTERN_WITH_REV_EXT: ClassVar[str] = "^{name}(@{revision})?(\\.[0-9]+)?\\.sid$"
+    PATTERN_WITH_REV_EXT: ClassVar[str] = "^{name}@{revision}(\\.[0-9]+)?\\.sid$"
 
     @classmethod
     def load_sid_file(cls, module: yangson.schemadata.ModuleData, sid_path: Iterable[str]) -> SidFile:

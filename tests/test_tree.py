@@ -105,10 +105,9 @@ def test_mod_a(data_model):
     assert node.sid == 61015
     assert schema_data.all_sids[61015] is node
 
-    assert node.children_by_sid == {
-            61021: node.get_schema_descendant([("ips", "a")]),
-            61016: node.get_schema_descendant([("add", "a")]),
-            }
+    # there are also choice and case nodes not present here
+    assert 61021 in node.children_by_sid and node.children_by_sid[61021] == node.get_child("ips")
+    assert 61016 in node.children_by_sid and node.children_by_sid[61016] == node.get_child("add")
 
     # list (config=true)
     id = "/a:box/ips/ips"
@@ -186,20 +185,22 @@ def test_choice(data_model):
     node = schema.get_schema_descendant(route)
 
     choice = node.get_schema_descendant([("exclusion", "a")])
+    assert choice.sid is None
     simple = choice.get_child("simple")
+    assert simple.sid is None
     assert simple.children_by_sid == {
             61030: simple.get_schema_descendant([("x-a", "a")]),
             }
     complex = choice.get_child("complex")
+    assert complex.sid is None
     assert complex.children_by_sid == {
             61031: complex.get_schema_descendant([("x-b", "a")]),
             61032: complex.get_schema_descendant([("x-c", "a")]),
             }
 
-    assert 61030 in node.children_by_sid and node.children_by_sid[SID] == simple.get_child("x-a")
-    assert 61031 in node.children_by_sid and node.children_by_sid[SID] == complex.get_child("x-b")
-    assert 61032 in node.children_by_sid and node.children_by_sid[SID] == complex.get_child("x-c")
-
+    assert 61030 in node.children_by_sid and node.children_by_sid[61030] == simple.get_child("x-a")
+    assert 61031 in node.children_by_sid and node.children_by_sid[61031] == complex.get_child("x-b")
+    assert 61032 in node.children_by_sid and node.children_by_sid[61032] == complex.get_child("x-c")
 
 
 def test_mod_a_sub(data_model):

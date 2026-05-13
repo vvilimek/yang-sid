@@ -55,6 +55,7 @@ def data_model():
     model.load_all_module_sids()
     return model
  
+@pytest.mark.skip(reason="How should the identifier for rc:yang-data look like? rc:yang-data is not part of the schema tree, see <https://mailarchive.ietf.org/arch/msg/netconf/WTarwaGOfPPKQBgJy3PEFSukOh0/>.")
 def test_mod_yd(data_model):
     schema_data = data_model.schema_data
     schema = data_model.schema
@@ -101,6 +102,7 @@ def data_model_rfc_example():
     model.load_all_module_sids()
     return model
 
+@pytest.mark.skip(reason="How should the identifier for rc:yang-data look like? rc:yang-data is not part of the schema tree, see <https://mailarchive.ietf.org/arch/msg/netconf/WTarwaGOfPPKQBgJy3PEFSukOh0/>.")
 def test_rfc_example(data_model_rfc_example):
     schema_data = data_model_rfc_example.schema_data
     schema = data_model_rfc_example.schema
