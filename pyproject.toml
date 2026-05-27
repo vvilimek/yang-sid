@@ -10,6 +10,7 @@ authors = [
 requires-python = ">=3.11"
 dependencies = [
     "yang-library",
+    "yang-sid-base"
     "yangson",
 ]
 
@@ -20,6 +21,7 @@ build-backend = "uv_build"
 [tool.uv.sources]
 yangson = { git = "https://github.com/vvilimek/yangson" }
 yang-library = { git = "https://github.com/vvilimek/yang-library" }
+yang-sid-base = { git = "https://github.com/vvilimek/yang-sid-base" }
 
 [dependency-groups]
 test = [
