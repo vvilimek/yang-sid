@@ -14,9 +14,7 @@ from pathlib import Path
 from dataclasses import dataclass, field
 
 from yang_library import *
-
-from .types import SID
-from ._sid_file_types import *
+from yang_sid_base import SID
 
 if TYPE_CHECKING:
     from .schemadata import ModuleData
@@ -100,20 +98,13 @@ class SidRepository:
     def check_sid_file(self, data: yangson.schemadata.SchemaData, sid_file: SidFile) -> bool:
         return False
 
-@overload
-def _get_list_raw(inst: SidFileDict, name: Literal["dependency-revision"]) -> list[DependencyRevisionDict]: ...
-
-@overload
-def _get_list_raw(inst: SidFileDict, name: Literal["assignment-range"]) -> list[AssignmentRangeDict]: ...
-
-
-def _get_list_raw(inst: SidFileDict, name: Literal["dependency-revision"] | Literal["assignment-range"]) -> list[DependencyRevisionDict] | list[AssignmentRangeDict]:
+def _get_list_raw(inst: Any, name: Literal["dependency-revision"] | Literal["assignment-range"]) -> list[Any]:
     try:
         lst = inst[name]
         if name == "dependency-revision":
-            return cast(list[DependencyRevisionDict], lst.raw_value())
+            return cast(list[Any], lst.raw_value())
         elif name == "assignment-range":
-            return cast(list[AssignmentRangeDict], lst.raw_value())
+            return cast(list[Any], lst.raw_value())
         else:
             assert False
     except yangson.exceptions.NonexistentInstance:
@@ -121,13 +112,13 @@ def _get_list_raw(inst: SidFileDict, name: Literal["dependency-revision"] | Lite
     except KeyError:
         return []
 
-def _get_mod_rev(instance: SidFileDict) -> Optional[str]:
+def _get_mod_rev(instance: Any) -> Optional[str]:
     try:
         return instance["module-revision"].value
     except yangson.exceptions.NonexistentInstance:
         return None
 
-def _get_descr(instance: SidFileDict) -> str:
+def _get_descr(instance: Any) -> str:
     try:
         return instance["description"].value
     except yangson.exceptions.NonexistentInstance:
@@ -199,7 +190,7 @@ class SidFileLoader:
     @staticmethod
     def _process_data(sid_file: yangson.instance.InstanceNode) -> SidFile:
         # TODO rework sid_file_cont (it is InstanceNode, not raw dict)
-        sid_file_cont = cast(SidFileDict, sid_file["ietf-sid-file:sid-file"]) # Sid file content
+        sid_file_cont = sid_file["ietf-sid-file:sid-file"] # Sid file content
         module = sid_file_cont["module-name"].value
         version = sid_file_cont["sid-file-version"].value
         revision = _get_mod_rev(sid_file_cont)
@@ -219,7 +210,7 @@ class SidFileLoader:
 
         all_ranges: list[AssignmentRange] = []
         for asgn_range in _get_list_raw(sid_file_cont, "assignment-range"):
-            all_ranges.append(AssignmentRange(SID(asgn_range["entry-point"]), asgn_range["size"]))
+            all_ranges.append(AssignmentRange(SID(int(asgn_range["entry-point"])), int(asgn_range["size"])))
 
         all_ranges.sort(key=lambda asgn_range: asgn_range.entry_point)
 

@@ -12,8 +12,10 @@ from pathlib import Path
 from collections.abc import Iterable, Mapping
 from typing import ClassVar, Any, Union, Optional, TYPE_CHECKING
 
+from yang_sid_base import SID
+
 from .sid_file import SidRepository, SidFile, SidFileLoader, ItemNamespace
-from .types import SID
+
 
 if TYPE_CHECKING:
     from .schemanode import SchemaNode

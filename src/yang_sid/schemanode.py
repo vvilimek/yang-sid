@@ -12,8 +12,8 @@ import yangson.typealiases
 import yangson.exceptions
 from yangson.statement import Statement
 from yangson.schemadata import SchemaContext
+from yang_sid_base import SID
 
-from .types import SID
 from .schemadata import ModuleData, SchemaData
 from .sid_file import SidFile, ItemNamespace
 

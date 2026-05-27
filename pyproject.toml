@@ -10,7 +10,7 @@ authors = [
 requires-python = ">=3.11"
 dependencies = [
     "yang-library",
-    "yang-sid-base"
+    "yang-sid-base",
     "yangson",
 ]
 
