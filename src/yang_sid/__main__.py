@@ -174,7 +174,7 @@ def main(infile: Optional[str] = None, pickled: bool = False,
         return 0
     if tree:
         mod_path = path if path else os.environ.get("YANG_MODPATH", ".") # see variable sp above
-        sid_path = sid_path is sid_path else os.environ.get("YANG_SIDPATH", mod_path)
+        sid_path = sid_path if sid_path else os.environ.get("YANG_SIDPATH", mod_path)
         dm.set_sid_path(sid_path)
         dm.load_all_module_sids()
         print(dm.ascii_tree(no_types, sid=show_sid, sid_price=sid_price))
