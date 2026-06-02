@@ -1,0 +1,19 @@
+{
+  "ietf-yang-library:modules-state": {
+    "module-set-id": "0",
+    "module": [
+      {
+	"name": "yd",
+	"revision": "2026-04-04",
+	"namespace": "http://example.com/yangdata",
+	"conformance-type": "implement"
+      },
+      {
+	"name": "ietf-restconf",
+	"revision": "2017-01-26",
+	"namespace": "urn:ietf:params:xml:ns:yang:ietf-restconf",
+	"conformance-type": "import"
+      }
+    ]
+  }
+}

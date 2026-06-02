@@ -1,0 +1,19 @@
+{
+  "ietf-yang-library:modules-state": {
+    "module-set-id": "0",
+    "module": [
+      {
+	"name": "struct",
+	"revision": "2026-04-05",
+	"namespace": "http://example.com/struct",
+	"conformance-type": "implement"
+      },
+      {
+	"name": "ietf-yang-structure-ext",
+	"revision": "2020-06-17",
+	"namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-structure-ext",
+	"conformance-type": "import"
+      }
+    ]
+  }
+}
