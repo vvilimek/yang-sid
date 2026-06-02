@@ -28,7 +28,7 @@ class SchemaNode(yangson.schemanode.SchemaNode):
     """Abstract class with SID support for all SID-aware schema nodes."""
 
     parent: Optional["InternalNode"]
-    sid_prices: tuple[tuple[int, int]] = tuple(
+    sid_prices: tuple[tuple[int, int]] = (
             (23, 1), # 23, len(cbor2.dumps(23))
             (255, 2), # 2**8 - 1, len(cbor2.dumps(255))
             (65535, 3), # 2**16 - 1, len(cbor2.dumps(65535))
