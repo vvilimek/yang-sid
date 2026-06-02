@@ -28,6 +28,13 @@ class SchemaNode(yangson.schemanode.SchemaNode):
     """Abstract class with SID support for all SID-aware schema nodes."""
 
     parent: Optional["InternalNode"]
+    sid_prices: tuple[tuple[int, int]] = tuple(
+            (23, 1), # 23, len(cbor2.dumps(23))
+            (255, 2), # 2**8 - 1, len(cbor2.dumps(255))
+            (65535, 3), # 2**16 - 1, len(cbor2.dumps(65535))
+            (4294967295, 5), # 2**32 - 1, len(cbor2.dumps(4294967295))
+            (18446744073709551615, 9), # 2**64-1, len(cbor2.dumps(18446744073709551615))
+            )
 
     def __init__(self) -> None:
         """Initialize the class instance."""
@@ -35,6 +42,43 @@ class SchemaNode(yangson.schemanode.SchemaNode):
         super().__init__()
         self.sid: Optional[SID] = None
         dbg_logger.debug(f"SchemaNode __init__() {self.__class__.__name__}")
+
+    def has_complete_sid_map(self) -> bool:
+        return False
+
+    def get_price(self) -> int:
+        parent = self.parent
+        assert parent is not None
+
+        if isinstance(parent, ChoiceNode):
+            assert parent.parent is not None
+            return self.sid - parent.parent.sid
+        elif isinstance(self, CaseNode):
+            choice = parent.parent
+            assert choice is not None
+            parent = choice.parent
+            assert parent is not None
+            return self.sid - parent.sid
+        else:
+            return self.sid - parent.sid
+
+    @classmethod
+    def _absolute_price(cls) -> int:
+        for (limit, price) in cls.sid_prices:
+            if self.sid <= limit:
+                return price
+
+        raise ValueError("SID number MUST be 63-bit number, " +
+                         "the larget limit is 64-bit but the SID number is even larger.")
+
+    def _tree_line(self, no_type, bool: False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+        """Return the receiver's contribution to tree diagram."""
+        line = super()._tree_line(not_type, ctype)
+        if sid:
+            line = line + f" SID({self.sid})"
+        if sid_price:
+            line = line + f"price {self.get_price()}"
+        return line
 
     # _follow_leafref  works without overriding, the YangData is derived from yangson.schemanode.YangData
 
@@ -144,6 +188,47 @@ class InternalNode(yangson.schemanode.InternalNode, SchemaNode):
         for refst in stmt.find_all("refine"):
             sn._refine_stmt(refst, sctx)
 
+    def has_complete_sid_map(self) -> bool:
+        if self.sid is None:
+            return False
+
+        for child in self.children:
+            if not child.has_complete_sid_map():
+                return False
+
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+        """Return the receiver's subtree as ASCII art."""
+        def suffix(sn):
+            return f" {{{sn.val_count}}}\n" if val_count and isinstance(
+                sn, (SchemaTreeNode, DataNode)) else "\n"
+        if not self.children:
+            return ""
+        cs = []
+        for c in filter(lambda c: not isinstance(c, (YangData, Structure)), self.children):
+            cs.extend(c._flatten())
+        cs.sort(key=lambda x: x.qual_name)
+        # yang-data children
+        ydcs = []
+        for ydc in filter(lambda c: isinstance(c, YangData), self.children):
+            ydcs.append(ydc)
+        # structure children
+        scs = []
+        for sc in filter(lambda c: isinstance(c, Structure), self.children):
+            scs.append(sc)
+        res = ""
+        for c in cs[:-1]:
+            res += (indent + c._tree_line(no_types, ctype, sid=sid, sid_price=sid_price) + suffix(c) +
+                    c._ascii_tree(indent + "|  ", no_types, val_count, ctype, sid=sid, sid_price=sid_price))
+        if len(cs) > 0:
+            res += (indent + cs[-1]._tree_line(no_types, ctype, sid=sid, sid_price=sid_price) + suffix(cs[-1]) +
+                cs[-1]._ascii_tree(indent + "   ", no_types, val_count, ctype, sid=sid, sid_price=sid_price))
+        for ydc in ydcs:
+            res += (ydc._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(ydc) +
+                    ydc._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+        for sc in scs:
+            res += (sc._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(sc) +
+                sc._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+        return res
 
     # _schema_pattern works without overriding, the YangData is derived from yangson.schemanode.YangData
     # _handle_child works without overriding, the YangData is derived from yangson.schemanode.YangData
@@ -183,6 +268,20 @@ class YangData(yangson.schemanode.YangData, GroupNode):
         """Initialize the class instance."""
         super().__init__(sctx)
         dbg_logger.debug(f"YangData __init__() {self.__class__.__name__}")
+
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+        """Return the receiver's subtree as ASCII art."""
+        def suffix(sn):
+            return f" {{{sn.val_count}}}\n" if val_count else "\n"
+        if not self.children:
+            return ""
+
+        c = self.children[0]
+        return (indent + c._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(c) +
+                c._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+
+    def _tree_line(self, no_type: bool = False, ctype: bool = False, sid: bool = False, sid_price: bool = False) -> str:
+        return super(InternalNode, self)._tree_line(no_type, ctype)
 
 class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
     """Root node of a schema tree with SIDs."""
@@ -309,6 +408,9 @@ class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
         yang_data = YangData(yd_sctx)
         self._handle_child(yang_data, stmt, yd_sctx)
 
+    def get_price(self) -> int:
+        return 0
+
     # _augment_stmt works without overriding, the Structure is derived from yangson.schemanode.Structure
 
 class DataNode(yangson.schemanode.DataNode, SchemaNode):
@@ -342,6 +444,23 @@ class Structure(yangson.schemanode.Structure, InternalNode):
         super().__init__()
         dbg_logger.debug(f"Structure __init__() {self.__class__.__name__}")
 
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+        """Return the receiver's subtree as ASCII art."""
+
+        def suffix(sn):
+            return f" {{{sn.val_count}}}" if val_count else "\n"
+        if not self.children:
+            return ""
+        cs = []
+        for c in self.children:
+            cs.extend(c._flatten())
+        res = ""
+        for c in cs[:-1]:
+            res += (indent + c._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(c) +
+                    c._ascii_tree(indent + "|  ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+        return (res + indent + cs[-1]._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(cs[-1]) +
+                cs[-1]._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+
 
 class SequenceNode(yangson.schemanode.SequenceNode, SchemaNode):
     """Abstract class for data nodes with SIDs that represent a sequence."""
@@ -367,12 +486,28 @@ class ChoiceNode(yangson.schemanode.ChoiceNode, InternalNode):
         super().__init__()
         dbg_logger.debug(f"ChoicoeNode __init__() {self.__class__.__name__}")
 
+    def has_complete_sid_map(self) -> bool:
+        for child in self.children:
+            if not child.has_complete_sid_map():
+                return False
+
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+        super(InternalNode, self)._tree_line(no_type, ctype)
+
 class CaseNode(yangson.schemanode.CaseNode, InternalNode):
     """Case node with SIDs."""
 
     def __init__(self) -> None:
         super().__init__()
         dbg_logger.debug(f"CaseNode __init__() {self.__class__.__name__}")
+
+    def has_complete_sid_map(self) -> bool:
+        for child in self.children:
+            if not child.has_complete_sid_map():
+                return False
+
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+        super(InternalNode, self)._tree_line(no_type, ctype)
 
 class LeafNode(yangson.schemanode.LeafNode, SchemaNode):
     """Leaf node with SIDs."""
@@ -381,12 +516,18 @@ class LeafNode(yangson.schemanode.LeafNode, SchemaNode):
         super().__init__()
         dbg_logger.debug(f"LeafNode __init__() {self.__class__.__name__}")
 
+    def has_complete_sid_map(self) -> bool:
+        return self.sid is not None
+
 class LeafListNode(yangson.schemanode.LeafListNode, SchemaNode):
     """Leaf-list node with SIDs."""
     def __init__(self) -> None:
         super().__init__()
         dbg_logger.debug(f"LeafListNode __init__() {self.__class__.__name__}")
 
+    def has_complete_sid_map(self) -> bool:
+        return self.sid is not None
+ 
 class AnyContentNode(yangson.schemanode.AnyContentNode, SchemaNode):
     """Abstract class for anydata or anyxml nodes with SIDs."""
 
@@ -430,6 +571,9 @@ class RpcActionNode(yangson.schemanode.RpcActionNode, GroupNode):
         # skip the yangson.schemanode.RpcActionNode._handle_substatements()
         super(yangson.schemanode.SchemaTreeNode, self)._handle_substatements(stmt, sctx)
 
+    def get_price(self) -> int:
+        return self._absolute_price()
+
 class InputNode(yangson.schemanode.InputNode, InternalNode):
     """RPC or action input node with SIDs."""
     def __init__(self, ns) -> None:
@@ -450,6 +594,9 @@ class NotificationNode(yangson.schemanode.NotificationNode, GroupNode):
         super().__init__()
         dbg_logger.debug(f"NotificationNode __init__() {self.__class__.__name__}")
 
+    def get_price(self) -> int:
+        return self._absolute_price()
+ 
 class SchemaTreeFactory:
     """Factory creating SID-aware schema tree."""
 

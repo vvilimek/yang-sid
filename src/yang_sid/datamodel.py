@@ -185,4 +185,15 @@ class DataModel(yangson.datamodel.DataModel):
                                                           data_factory=data_factory,
                                                           tree_factory=tree_factory)
 
+    def ascii_tree(self, no_types: bool = False, val_count: bool = False, sid: bool = False, sid_price: bool = False) -> str:
+        """Generate ASCII art representation of the schema tree.
+
+        Args:
+            no_types: Suppress output of data type info.
+            val_count: Show accumulated validation counts.
+
+        Returns:
+            String with the ASCII tree.
+        """
+        return self.schema._ascii_tree("", no_types, val_count, sid=sid, sid_price=sid_price)
 
