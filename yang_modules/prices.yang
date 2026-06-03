@@ -1,0 +1,38 @@
+module prices {
+  yang-version 1.1;
+
+  prefix p;
+  namespace "http://example.com/prices";
+
+  leaf one-linear { type uint32; }
+  leaf two-linear { type uint32; }
+  leaf three-linear { type uint32; }
+  leaf five-linear { type uint32; }
+  leaf nine-linear { type uint32; }
+
+  container one-top-down {
+    container two-top-down {
+      container three-top-down {
+	container five-top-down {
+	  leaf nine-top-down { type string; }
+
+	  notification absolute-three {}
+	}
+      }
+    }
+  }
+
+  container toplevel {
+    container nine-bottom-up {
+      container five-bottom-up {
+	container three-bottom-up {
+	  container two-bottom-up {
+	    leaf one-bottom-up { type empty; }
+	  }
+	}
+
+	action absolute-two {}
+      }
+    }
+  }
+}

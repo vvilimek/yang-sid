@@ -1,0 +1,13 @@
+{
+  "ietf-yang-library:modules-state": {
+    "module": [
+      {
+        "name": "prices",
+        "revision": "",
+        "namespace": "http://example.com/prices",
+        "conformance-type": "implement"
+      }
+    ],
+    "module-set-id": "0"
+  }
+}
