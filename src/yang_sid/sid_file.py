@@ -168,7 +168,7 @@ class SidFileLoader:
                 if path.is_dir():
                     for file in path.iterdir():
                         if pattern.match(file.name):
-                            return path / file
+                            return file
                 elif path.is_file():
                     if pattern.match(path.name):
                         return path
@@ -218,7 +218,7 @@ class SidFileLoader:
             prev_range = all_ranges[i - 1]
             curr_range = all_ranges[i]
 
-            if prev_range.entry_point + prev_range.size >= curr_range.entry_point:
+            if int(prev_range.entry_point) + prev_range.size >= curr_range.entry_point:
                 raise ValueError("Overlapping range assignment")
 
         sid_file_entries: dict[SID, ItemAssignment] = {} # TODO rename ItemAssignment
