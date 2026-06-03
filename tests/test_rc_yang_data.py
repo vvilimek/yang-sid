@@ -57,13 +57,16 @@ def data_model():
     model.load_all_module_sids()
     return model
 
-@pytest.mark.skip(reason="How should the identifier for rc:yang-data look like? rc:yang-data is not part of the schema tree, see <https://mailarchive.ietf.org/arch/msg/netconf/WTarwaGOfPPKQBgJy3PEFSukOh0/>.")
+#@pytest.mark.skip(reason="How should the identifier for rc:yang-data look like? rc:yang-data is not part of the schema tree, see <https://mailarchive.ietf.org/arch/msg/netconf/WTarwaGOfPPKQBgJy3PEFSukOh0/>.")
 def test_mod_yd(data_model):
     schema_data = data_model.schema_data
     schema = data_model.schema
 
-    id = "/yd:yd-box"
-    route = schema_data.path2route(id)
+    # You should use nid2route over path2route
+    #id = "/yd:yangd/yd-box"
+    #route = schema_data.path2route(id)
+    nid = "/yd:yd-box"
+    route = schema_data.nid2route(nid, schema=schema)
     node = schema.get_schema_descendant(route)
     assert node.sid == SID(69001)
     assert schema_data.all_sids[SID(69001)] is node
@@ -104,13 +107,16 @@ def data_model_rfc_example():
     model.load_all_module_sids()
     return model
 
-@pytest.mark.skip(reason="How should the identifier for rc:yang-data look like? rc:yang-data is not part of the schema tree, see <https://mailarchive.ietf.org/arch/msg/netconf/WTarwaGOfPPKQBgJy3PEFSukOh0/>.")
+#@pytest.mark.skip(reason="How should the identifier for rc:yang-data look like? rc:yang-data is not part of the schema tree, see <https://mailarchive.ietf.org/arch/msg/netconf/WTarwaGOfPPKQBgJy3PEFSukOh0/>.")
 def test_rfc_example(data_model_rfc_example):
     schema_data = data_model_rfc_example.schema_data
     schema = data_model_rfc_example.schema
 
-    id = "/ietf-restconf:errors"
-    route = schema_data.path2route(id)
+    # You should use nid2route over path2route
+    #id = "/ietf-restconf:yang-errors/errors"
+    #route = schema_data.path2route(id)
+    nid = "/ietf-restconf:errors"
+    route = schema_data.nid2route(nid, schema=schema)
     node = schema.get_schema_descendant(route)
     assert node.sid == SID(68001)
     assert schema_data.all_sids[SID(68001)] is node
