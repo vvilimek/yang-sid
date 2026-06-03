@@ -447,6 +447,12 @@
         "identifier": "/a:something-changed/what",
         "status": "unstable",
         "sid": "61069"
+      },
+      {
+	"namespace": "data",
+	"identifier": "/b:compound/a:additional",
+	"status": "unstable",
+	"sid": "61070"
       }
     ]
   }
