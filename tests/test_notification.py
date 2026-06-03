@@ -5,6 +5,8 @@
 import yang_sid
 import pytest
 
+from yang_sid_base import SID
+
 from pathlib import Path
 
 MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
@@ -31,7 +33,7 @@ YANG_LIB = """
         "name": "b",
         "revision": "2026-04-01",
         "namespace": "http://example.com/b/",
-        "conformance-type": "implement" 
+        "conformance-type": "implement"
       },
       {
         "name": "c",
@@ -64,7 +66,7 @@ def data_model():
     model.set_sid_path([SID_PATH])
     model.load_all_module_sids()
     return model
- 
+
 def test_mod_a_notification(data_model):
     schema_data = data_model.schema_data
     schema = data_model.schema
@@ -72,25 +74,23 @@ def test_mod_a_notification(data_model):
     id = "/a:something-changed"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61066
-    assert schema_data.all_sids[61066] is node
+    assert node.sid == SID(61066)
+    assert schema_data.all_sids[SID(61066)] is node
     time = node.get_schema_descendant([("time", "a")])
-    assert time.sid == 61068
-    assert schema_data.all_sids[61068] is time
+    assert time.sid == SID(61068)
+    assert schema_data.all_sids[SID(61068)] is time
     what = node.get_schema_descendant([("what", "a")])
-    assert what.sid == 61069
-    assert schema_data.all_sids[61069] is what
+    assert what.sid == SID(61069)
+    assert schema_data.all_sids[SID(61069)] is what
     new_value_str = node.get_schema_descendant([("new-value-str", "a")])
-    assert new_value_str.sid == 61067
-    assert schema_data.all_sids[61067] is new_value_str
+    assert new_value_str.sid == SID(61067)
+    assert schema_data.all_sids[SID(61067)] is new_value_str
 
     assert node.children_by_sid == {
-            61067: new_value_str,
-            61068: time,
-            61069: what,
+            SID(61067): new_value_str,
+            SID(61068): time,
+            SID(61069): what,
             }
 
-
- 
 # no notifications in ietf-yang-types, ietf-inet-types
 

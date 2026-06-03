@@ -5,6 +5,8 @@
 import pytest
 import yang_sid
 
+from yang_sid_base import SID
+
 from pathlib import Path
 
 """
@@ -13,7 +15,7 @@ Test description
 Test suite for verifying SID assignment for schema nodes of configuration or operation state.
 We forcus on `sid` and `children_by_sid` attributes of schema nodes and `all_sids` attribute of schema data.
 
-Related RFC are document [RFC7950] defining all the schema node types and document [RFC8342] containing
+Related RFC are document [RFC950] defining all the schema node types and document [RFC8342] containing
 terms configuration and operational state.
 
 RFC7950: The YANG 1.1 Data Modeling Language
@@ -85,14 +87,14 @@ def test_mod_b(data_model):
     id = "/b:compound"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 62004
-    assert schema_data.all_sids[62004] is node
+    assert node.sid == SID(62004)
+    assert schema_data.all_sids[SID(62004)] is node
 
     id = "/b:compound/value"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 62006
-    assert schema_data.all_sids[62006] is node
+    assert node.sid == SID(62006)
+    assert schema_data.all_sids[SID(62006)] is node
 
 def test_mod_a(data_model):
     schema_data = data_model.schema_data
@@ -102,79 +104,79 @@ def test_mod_a(data_model):
     id = "/a:box/ips"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61015
-    assert schema_data.all_sids[61015] is node
+    assert node.sid == SID(61015)
+    assert schema_data.all_sids[SID(61015)] is node
 
     # there are also choice and case nodes not present here
-    assert 61021 in node.children_by_sid and node.children_by_sid[61021] == node.get_child("ips")
-    assert 61016 in node.children_by_sid and node.children_by_sid[61016] == node.get_child("add")
+    assert SID(61021) in node.children_by_sid and node.children_by_sid[SID(61021)] == node.get_child("ips")
+    assert SID(61016) in node.children_by_sid and node.children_by_sid[SID(61016)] == node.get_child("add")
 
     # list (config=true)
     id = "/a:box/ips/ips"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61021
-    assert schema_data.all_sids[61021] is node
+    assert node.sid == SID(61021)
+    assert schema_data.all_sids[SID(61021)] is node
 
     assert node.children_by_sid == {
-            61022: node.get_schema_descendant([("interface", "a")]),
-            61023: node.get_schema_descendant([("ip", "a")]),
-            61024: node.get_schema_descendant([("packet-count", "a")]),
-            61025: node.get_schema_descendant([("remove", "a")]),
+            SID(61022): node.get_schema_descendant([("interface", "a")]),
+            SID(61023): node.get_schema_descendant([("ip", "a")]),
+            SID(61024): node.get_schema_descendant([("packet-count", "a")]),
+            SID(61025): node.get_schema_descendant([("remove", "a")]),
             }
 
     # leaf (config=true)
     id = "/a:box/ips/ips/interface"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61022
-    assert schema_data.all_sids[61022] is node
+    assert node.sid == SID(61022)
+    assert schema_data.all_sids[SID(61022)] is node
 
     # leaf-list (config=true)
     id = "/a:box/measurements"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61033
-    assert schema_data.all_sids[61033] is node
+    assert node.sid == SID(61033)
+    assert schema_data.all_sids[SID(61033)] is node
 
     # container (config=false)
     id = "/a:misc"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61053
-    assert schema_data.all_sids[61053] is node
+    assert node.sid == SID(61053)
+    assert schema_data.all_sids[SID(61053)] is node
 
     assert node.children_by_sid == {
-            61054: node.get_schema_descendant([("names", "a")]),
-            61055: node.get_schema_descendant([("runtime_pairs", "a")]),
-            61058: node.get_schema_descendant([("simple-leaf", "a")]),
+            SID(61054): node.get_schema_descendant([("names", "a")]),
+            SID(61055): node.get_schema_descendant([("runtime_pairs", "a")]),
+            SID(61058): node.get_schema_descendant([("simple-leaf", "a")]),
             }
 
     # list (config=false)
     id = "/a:misc/runtime_pairs"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61055
-    assert schema_data.all_sids[61055] is node
+    assert node.sid == SID(61055)
+    assert schema_data.all_sids[SID(61055)] is node
 
     assert node.children_by_sid == {
-            61056: node.get_schema_descendant([("x", "a")]),
-            61057: node.get_schema_descendant([("y", "a")]),
+            SID(61056): node.get_schema_descendant([("x", "a")]),
+            SID(61057): node.get_schema_descendant([("y", "a")]),
             }
 
     # leaf (config=false)
     id = "/a:misc/simple-leaf"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61058
-    assert schema_data.all_sids[61058] is node
+    assert node.sid == SID(61058)
+    assert schema_data.all_sids[SID(61058)] is node
 
     # leaf-list (config=false)
     id = "/a:misc/names"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61054
-    assert schema_data.all_sids[61054] is node
+    assert node.sid == SID(61054)
+    assert schema_data.all_sids[SID(61054)] is node
 
 def test_choice(data_model):
     schema_data = data_model.schema_data
@@ -189,18 +191,18 @@ def test_choice(data_model):
     simple = choice.get_child("simple")
     assert simple.sid is None
     assert simple.children_by_sid == {
-            61030: simple.get_schema_descendant([("x-a", "a")]),
+            SID(61030): simple.get_schema_descendant([("x-a", "a")]),
             }
     complex = choice.get_child("complex")
     assert complex.sid is None
     assert complex.children_by_sid == {
-            61031: complex.get_schema_descendant([("x-b", "a")]),
-            61032: complex.get_schema_descendant([("x-c", "a")]),
+            SID(61031): complex.get_schema_descendant([("x-b", "a")]),
+            SID(61032): complex.get_schema_descendant([("x-c", "a")]),
             }
 
-    assert 61030 in node.children_by_sid and node.children_by_sid[61030] == simple.get_child("x-a")
-    assert 61031 in node.children_by_sid and node.children_by_sid[61031] == complex.get_child("x-b")
-    assert 61032 in node.children_by_sid and node.children_by_sid[61032] == complex.get_child("x-c")
+    assert SID(61030) in node.children_by_sid and node.children_by_sid[SID(61030)] == simple.get_child("x-a")
+    assert SID(61031) in node.children_by_sid and node.children_by_sid[SID(61031)] == complex.get_child("x-b")
+    assert SID(61032) in node.children_by_sid and node.children_by_sid[SID(61032)] == complex.get_child("x-c")
 
 
 def test_mod_a_sub(data_model):
@@ -211,8 +213,8 @@ def test_mod_a_sub(data_model):
     id = "/a:a-sub-data"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 61011
-    assert schema_data.all_sids[61011] is node
+    assert node.sid == SID(61011)
+    assert schema_data.all_sids[SID(61011)] is node
 
     # submodule augment
     # TODO: XXX: Beware that the pyang is unable to generate SID for this augmentation
@@ -220,8 +222,8 @@ def test_mod_a_sub(data_model):
     #id = "/b:compound/a:additional"
     #route = schema_data.path2route(id)
     #node = schema.get_schema_descendant(route)
-    #assert node.sid == 61063
-    #assert schema_data.all_sids[61063] is node
+    #assert node.sid == SID(61063)
+    #assert schema_data.all_sids[SID(61063)] is node
 
 # no identities in ietf-inet-types and ietf-yang-types (as of rev 2025-12-22)
 

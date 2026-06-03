@@ -5,6 +5,8 @@
 import pytest
 import yang_sid
 
+from yang_sid_base import SID
+
 from pathlib import Path
 
 """
@@ -75,7 +77,7 @@ def data_model():
     model.set_sid_path([SID_PATH])
     model.load_all_module_sids()
     return model
- 
+
 def test_mod_struct(data_model):
     schema_data = data_model.schema_data
     schema = data_model.schema
@@ -83,36 +85,36 @@ def test_mod_struct(data_model):
     id = "/struct:st"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 67001
-    assert schema_data.all_sids[67001] is node
+    assert node.sid == SID(67001)
+    assert schema_data.all_sids[SID(67001)] is node
 
     name = node.get_schema_descendant([("name", "struct")])
-    assert name.sid == 67006
-    assert schema_data.all_sids[67006] is name
+    assert name.sid == SID(67006)
+    assert schema_data.all_sids[SID(67006)] is name
     pair = node.get_schema_descendant([("pair", "struct")])
-    assert pair.sid == 67007
-    assert schema_data.all_sids[67007] is pair
+    assert pair.sid == SID(67007)
+    assert schema_data.all_sids[SID(67007)] is pair
     assert pair.children_by_sid == {
-            67008: pair.get_schema_descendant([("x", "struct")]),
-            67009: pair.get_schema_descendant([("y", "struct")]),
+            SID(67008): pair.get_schema_descendant([("x", "struct")]),
+            SID(67009): pair.get_schema_descendant([("y", "struct")]),
             }
     ip = node.get_schema_descendant([("ip", "struct")])
-    assert ip.sid == 67002
-    assert schema_data.all_sids[67002] is ip
+    assert ip.sid == SID(67002)
+    assert schema_data.all_sids[SID(67002)] is ip
     assert ip.children_by_sid == {
-            67003: ip.get_schema_descendant([("interface", "struct")]),
-            67004: ip.get_schema_descendant([("ip", "struct")]),
-            67005: ip.get_schema_descendant([("packet-count", "struct")]),
+            SID(67003): ip.get_schema_descendant([("interface", "struct")]),
+            SID(67004): ip.get_schema_descendant([("ip", "struct")]),
+            SID(67005): ip.get_schema_descendant([("packet-count", "struct")]),
             }
     values = node.get_schema_descendant([("values", "struct")])
-    assert values.sid == 67010
-    assert schema_data.all_sids[67010] is values
+    assert values.sid == SID(67010)
+    assert schema_data.all_sids[SID(67010)] is values
 
     assert node.children_by_sid == {
-            67002: ip,
-            67006: name,
-            67007: pair,
-            67010: values,
+            SID(67002): ip,
+            SID(67006): name,
+            SID(67007): pair,
+            SID(67010): values,
             }
 
 @pytest.fixture
@@ -129,46 +131,46 @@ def test_rfc_example(data_model_rfc_example):
     id = "/example-module:address-book"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid == 65001
-    assert schema_data.all_sids[65001] is node
+    assert node.sid == SID(65001)
+    assert schema_data.all_sids[SID(65001)] is node
     assert node.children_by_sid == {
-            65002: node.get_schema_descendant([("address", "example-module")])
+            SID(65002): node.get_schema_descendant([("address", "example-module")])
             }
 
     id = "/example-module:address-book/address"
     route = schema_data.path2route(id)
     node = schema.get_schema_descendant(route)
-    assert node.sid ==  65002
-    assert schema_data.all_sids[65002] is node
+    assert node.sid ==  SID(65002)
+    assert schema_data.all_sids[SID(65002)] is node
 
-    last = node.get_schema_descendant([("last", "example-module")]) 
-    assert last.sid == 65005
-    assert schema_data.all_sids[65005] is last
-    first = node.get_schema_descendant([("first", "example-module")]) 
-    assert first.sid == 65004
-    assert schema_data.all_sids[65004] is first
-    city = node.get_schema_descendant([("city", "example-module")]) 
-    assert city.sid == 65003
-    assert schema_data.all_sids[65003] is city
-    street = node.get_schema_descendant([("street", "example-module")]) 
-    assert street.sid == 65007
-    assert schema_data.all_sids[65007] is street
+    last = node.get_schema_descendant([("last", "example-module")])
+    assert last.sid == SID(65005)
+    assert schema_data.all_sids[SID(65005)] is last
+    first = node.get_schema_descendant([("first", "example-module")])
+    assert first.sid == SID(65004)
+    assert schema_data.all_sids[SID(65004)] is first
+    city = node.get_schema_descendant([("city", "example-module")])
+    assert city.sid == SID(65003)
+    assert schema_data.all_sids[SID(65003)] is city
+    street = node.get_schema_descendant([("street", "example-module")])
+    assert street.sid == SID(65007)
+    assert schema_data.all_sids[SID(65007)] is street
 
     # augmented nodes
-    county = node.get_schema_descendant([("county", "example-module-aug")]) 
-    assert county.sid == 66001
-    assert schema_data.all_sids[66001] is county
-    zipcode = node.get_schema_descendant([("zipcode", "example-module-aug")]) 
-    assert zipcode.sid == 66002
-    assert schema_data.all_sids[66002] is zipcode
+    county = node.get_schema_descendant([("county", "example-module-aug")])
+    assert county.sid == SID(66001)
+    assert schema_data.all_sids[SID(66001)] is county
+    zipcode = node.get_schema_descendant([("zipcode", "example-module-aug")])
+    assert zipcode.sid == SID(66002)
+    assert schema_data.all_sids[SID(66002)] is zipcode
 
     assert node.children_by_sid == {
-            65003: city,
-            65004: first,
-            65005: last,
-            65006: node.get_schema_descendant([("state", "example-module")]),
-            65007: street,
-            66001: county,
-            66002: zipcode,
+            SID(65003): city,
+            SID(65004): first,
+            SID(65005): last,
+            SID(65006): node.get_schema_descendant([("state", "example-module")]),
+            SID(65007): street,
+            SID(66001): county,
+            SID(66002): zipcode,
             }
 

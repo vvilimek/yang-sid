@@ -5,6 +5,8 @@
 import pytest
 import yang_sid
 
+from yang_sid_base import SID
+
 from pathlib import Path
 
 MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
@@ -31,7 +33,7 @@ YANG_LIB = """
         "name": "b",
         "revision": "2026-04-01",
         "namespace": "http://example.com/b/",
-        "conformance-type": "implement" 
+        "conformance-type": "implement"
       },
       {
         "name": "c",
@@ -71,38 +73,38 @@ def schema_data():
     return schema_data
 
 def test_mod_c(schema_data):
-    mod_data = schema_data.modules_by_sid[63000]
+    mod_data = schema_data.modules_by_sid[SID(63000)]
     assert mod_data.yang_id == ("c", "2026-04-02")
- 
+
     # not implemented feature (of import module)
     assert "c-feature" not in mod_data.sid_features
-    assert 63002 not in mod_data.features_by_sid
+    assert SID(63002) not in mod_data.features_by_sid
     assert "c-feature" not in mod_data.features
-    assert 63002 not in schema_data.all_sids
+    assert SID(63002) not in schema_data.all_sids
 
     # implemented feature (of import module)
-    assert mod_data.sid_features["c-feature-impl"] == 63003
-    assert mod_data.features_by_sid[63003] == "c-feature-impl"
+    assert mod_data.sid_features["c-feature-impl"] == SID(63003)
+    assert mod_data.features_by_sid[SID(63003)] == "c-feature-impl"
     assert "c-feature-impl" in mod_data.features
-    assert schema_data.all_sids[63003] == "c-feature-impl"
- 
+    assert schema_data.all_sids[SID(63003)] == "c-feature-impl"
+
 def test_mod_b(schema_data):
-    mod_data = schema_data.modules_by_sid[62000]
+    mod_data = schema_data.modules_by_sid[SID(62000)]
     assert mod_data.yang_id == ("b", "2026-04-01")
 
     # not implemented feature (of implement module)
     assert "b-feature" not in mod_data.sid_features
-    assert 62003 not in mod_data.features_by_sid
+    assert SID(62003) not in mod_data.features_by_sid
     assert "b-feature" not in mod_data.features
-    assert 62003 not in schema_data.all_sids
+    assert SID(62003) not in schema_data.all_sids
 
 def test_mod_a(schema_data):
-    mod_data = schema_data.modules_by_sid[61000]
+    mod_data = schema_data.modules_by_sid[SID(61000)]
     assert mod_data.yang_id == ("a", "2026-04-03")
 
     # implemented
-    for (feat_name, feat_sid) in [("a-feature", 61006), ("a-feature-ident", 61007), ("a-feature-test", 61008), 
-                                  ("a-feature-tree", 61009)]:
+    for (feat_name, feat_sid) in [("a-feature", SID(61006)), ("a-feature-ident", SID(61007)), ("a-feature-test", SID(61008)),
+                                  ("a-feature-tree", SID(61009))]:
         assert mod_data.sid_features[feat_name] == feat_sid
         assert mod_data.features_by_sid[feat_sid] == feat_name
         assert feat_name in mod_data.features
@@ -110,7 +112,7 @@ def test_mod_a(schema_data):
 
 
     # submodule features are registered at main module ModuleData
-    (feat_name, feat_sid) = ("a-sub-feature", 61010)
+    (feat_name, feat_sid) = ("a-sub-feature", SID(61010))
     assert mod_data.sid_features[feat_name] == feat_sid
     assert mod_data.features_by_sid[feat_sid] == feat_name
     assert feat_name in mod_data.features

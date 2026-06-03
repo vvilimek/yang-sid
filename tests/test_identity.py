@@ -5,6 +5,8 @@
 import pytest
 import yang_sid
 
+from yang_sid_base import SID
+
 from pathlib import Path
 
 MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
@@ -31,7 +33,7 @@ YANG_LIB = """
         "name": "b",
         "revision": "2026-04-01",
         "namespace": "http://example.com/b/",
-        "conformance-type": "implement" 
+        "conformance-type": "implement"
       },
       {
         "name": "c",
@@ -68,34 +70,34 @@ def schema_data():
 def test_mod_c(schema_data):
     # import modules do not contribute with identities
     assert ("c-identity", "c") not in schema_data.identity_adjs
-    assert 63001 not in schema_data.all_sids
-    
-def test_mod_b(schema_data):
-    assert schema_data.sid_identities[("b-base", "b")] == 62001
-    assert schema_data.identities_by_sid[62001] == ("b-base", "b")
-    assert schema_data.all_sids[62001] == ("b-base", "b")
+    assert SID(63001) not in schema_data.all_sids
 
-    assert schema_data.sid_identities[("b-derived", "b")] == 62002
-    assert schema_data.identities_by_sid[62002] == ("b-derived", "b")
-    assert schema_data.all_sids[62002] == ("b-derived", "b")
+def test_mod_b(schema_data):
+    assert schema_data.sid_identities[("b-base", "b")] == SID(62001)
+    assert schema_data.identities_by_sid[SID(62001)] == ("b-base", "b")
+    assert schema_data.all_sids[SID(62001)] == ("b-base", "b")
+
+    assert schema_data.sid_identities[("b-derived", "b")] == SID(62002)
+    assert schema_data.identities_by_sid[SID(62002)] == ("b-derived", "b")
+    assert schema_data.all_sids[SID(62002)] == ("b-derived", "b")
 
 def test_mod_a(schema_data):
-    assert schema_data.sid_identities[("a-base", "a")] == 61002
-    assert schema_data.identities_by_sid[61002] == ("a-base", "a")
-    assert schema_data.all_sids[61002] == ("a-base", "a")
+    assert schema_data.sid_identities[("a-base", "a")] == SID(61002)
+    assert schema_data.identities_by_sid[SID(61002)] == ("a-base", "a")
+    assert schema_data.all_sids[SID(61002)] == ("a-base", "a")
 
     # identity with if-feature
-    assert schema_data.sid_identities[("a-conditional", "a")] == 61003
-    assert schema_data.identities_by_sid[61003] == ("a-conditional", "a")
-    assert schema_data.all_sids[61003] == ("a-conditional", "a")
+    assert schema_data.sid_identities[("a-conditional", "a")] == SID(61003)
+    assert schema_data.identities_by_sid[SID(61003)] == ("a-conditional", "a")
+    assert schema_data.all_sids[SID(61003)] == ("a-conditional", "a")
 
-    assert schema_data.sid_identities[("a-simple", "a")] == 61004
-    assert schema_data.identities_by_sid[61004] == ("a-simple", "a")
-    assert schema_data.all_sids[61004] == ("a-simple", "a")
+    assert schema_data.sid_identities[("a-simple", "a")] == SID(61004)
+    assert schema_data.identities_by_sid[SID(61004)] == ("a-simple", "a")
+    assert schema_data.all_sids[SID(61004)] == ("a-simple", "a")
 
-    assert schema_data.sid_identities[("complex", "a")] == 61005
-    assert schema_data.identities_by_sid[61005] == ("complex", "a")
-    assert schema_data.all_sids[61005] == ("complex", "a")
+    assert schema_data.sid_identities[("complex", "a")] == SID(61005)
+    assert schema_data.identities_by_sid[SID(61005)] == ("complex", "a")
+    assert schema_data.all_sids[SID(61005)] == ("complex", "a")
 
 
 # no identities in ietf-inet-types and ietf-yang-types (as of rev 2025-12-22)

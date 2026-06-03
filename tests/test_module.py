@@ -5,6 +5,8 @@
 import pytest
 import yang_sid
 
+from yang_sid_base import SID
+
 from pathlib import Path
 
 MOD_PATH = (Path(yang_sid.__file__).parent.parent.parent / "yang_modules", Path(yang_sid.__file__).parent / "yang_modules")
@@ -30,7 +32,7 @@ YANG_LIB = """
         "name": "b",
         "revision": "2026-04-01",
         "namespace": "http://example.com/b/",
-        "conformance-type": "implement" 
+        "conformance-type": "implement"
       },
       {
         "name": "c",
@@ -67,37 +69,37 @@ def schema_data():
     return model.schema_data
 
 def test_mod_c(schema_data):
-    mod_data = schema_data.modules_by_sid[63000]
+    mod_data = schema_data.modules_by_sid[SID(63000)]
 
     assert mod_data.yang_id == ("c", "2026-04-02")
-    assert schema_data.all_sids[63000] is mod_data
-    assert mod_data.sid == 63000
-    
+    assert schema_data.all_sids[SID(63000)] is mod_data
+    assert mod_data.sid == SID(63000)
+
 def test_mod_b(schema_data):
-    mod_data = schema_data.modules_by_sid[62000]
+    mod_data = schema_data.modules_by_sid[SID(62000)]
 
     assert mod_data.yang_id == ("b", "2026-04-01")
-    assert schema_data.all_sids[62000] is mod_data
-    assert mod_data.sid == 62000
+    assert schema_data.all_sids[SID(62000)] is mod_data
+    assert mod_data.sid == SID(62000)
 
 def test_mod_a(schema_data):
-    mod_data = schema_data.modules_by_sid[61000]
+    mod_data = schema_data.modules_by_sid[SID(61000)]
 
     assert mod_data.yang_id == ("a", "2026-04-03")
-    assert schema_data.all_sids[61000] is mod_data
-    assert mod_data.sid == 61000
+    assert schema_data.all_sids[SID(61000)] is mod_data
+    assert mod_data.sid == SID(61000)
 
     assert len(mod_data.submodules) == 1
     for submod in mod_data.submodules:
         submod_data = schema_data.modules[submod]
         assert submod_data.yang_id == ("a-sub", "2026-04-03")
-        assert schema_data.all_sids[61001] is submod_data
-        assert submod_data.sid == 61001
+        assert schema_data.all_sids[SID(61001)] is submod_data
+        assert submod_data.sid == SID(61001)
 
 def test_ietf_mods(schema_data):
     yang = schema_data.modules_by_name["ietf-yang-types"]
     inet = schema_data.modules_by_name["ietf-inet-types"]
 
-    assert yang.sid == 1100
-    assert inet.sid == 1150
+    assert yang.sid == SID(1100)
+    assert inet.sid == SID(1150)
 
