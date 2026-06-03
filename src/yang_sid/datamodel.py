@@ -195,5 +195,8 @@ class DataModel(yangson.datamodel.DataModel):
         Returns:
             String with the ASCII tree.
         """
-        return self.schema._ascii_tree("", no_types, val_count, sid=sid, sid_price=sid_price)
+        
+        extended_ascii_tree = self.schema._ascii_tree("", no_types, val_count, sid=sid, sid_price=sid_price)
+        extended_ascii_tree += f"\nTotal price: {self.schema.total_sid_price()}"
+        return extended_ascii_tree
 
