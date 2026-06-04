@@ -564,6 +564,17 @@ class ChoiceNode(yangson.schemanode.ChoiceNode, InternalNode):
         super().__init__()
         dbg_logger.debug(f"ChoicoeNode __init__() {self.__class__.__name__}")
 
+    def _handle_child(self, node: SchemaNode, stmt: Statement,
+                      sctx: SchemaContext) -> None:
+        if isinstance(node, yangson.schemanode.CaseNode):
+            super()._handle_child(node, stmt, sctx)
+        else:
+            cn = CaseNode()
+            cn.name = stmt.argument
+            cn.ns = sctx.default_ns
+            self._add_child(cn)
+            cn._handle_child(node, stmt, sctx)
+
     def has_complete_sid_map(self) -> bool:
         for child in self.children:
             if not child.has_complete_sid_map():
