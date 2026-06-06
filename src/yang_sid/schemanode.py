@@ -51,23 +51,34 @@ class SchemaNode(yangson.schemanode.SchemaNode):
         parent = self.parent
         assert parent is not None
 
+        if self.sid is None:
+            return None
+
         try:
             # Note that for SchemaTreeNode (toplevel pseudo-node)
             # the algorithm works as if it was relative.
             # This node has SID(0) so everything works as expected
             if isinstance(parent, ChoiceNode):
                 assert parent.parent is not None
+                if parent.parent.sid is None:
+                    return None
                 delta = self.sid - parent.parent.sid
             elif isinstance(parent, CaseNode):
                 choice = parent.parent
                 assert choice is not None
                 parent = choice.parent
                 assert parent is not None
+                if parent.sid is None:
+                    return None
                 delta = self.sid - parent.sid
             elif isinstance(parent, YangData):
                 assert parent.parent is not None
+                if parent.parent.sid is None:
+                    return None
                 delta = self.sid - parent.parent.sid
             else:
+                if parent.sid is None:
+                    return None
                 delta = self.sid - parent.sid
         except Exception as e:
             # TODO the price of the string should be considered
@@ -76,7 +87,7 @@ class SchemaNode(yangson.schemanode.SchemaNode):
         return self._absolute_price(delta)        
 
     @classmethod
-    def _absolute_price(cls, sid: Union[SID, RelativeSID]) -> int:
+    def _absolute_price(cls, sid: Union[SID, RelativeSID, None]) -> int:
         for (limit, price) in cls.sid_prices:
             if int(sid) <= limit:
                 return price
@@ -233,6 +244,9 @@ class InternalNode(yangson.schemanode.InternalNode, SchemaNode):
             scs.append(sc)
         res = ""
         for c in cs[:-1]:
+            import inspect
+            if 'sid' not in inspect.signature(c._tree_line)._parameters:
+                breakpoint()
             res += (indent + c._tree_line(no_types, ctype, sid=sid, sid_price=sid_price) + suffix(c) +
                     c._ascii_tree(indent + "|  ", no_types, val_count, ctype, sid=sid, sid_price=sid_price))
         if len(cs) > 0:
@@ -564,7 +578,7 @@ class ChoiceNode(yangson.schemanode.ChoiceNode, InternalNode):
         super().__init__()
         dbg_logger.debug(f"ChoicoeNode __init__() {self.__class__.__name__}")
 
-    def _handle_child(self, node: SchemaNode, stmt: Statement,
+    def _handle_child(self, node: yangson.schemanode.SchemaNode, stmt: Statement,
                       sctx: SchemaContext) -> None:
         if isinstance(node, yangson.schemanode.CaseNode):
             super()._handle_child(node, stmt, sctx)
@@ -658,7 +672,7 @@ class AnyContentNode(yangson.schemanode.AnyContentNode, SchemaNode):
 
     def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return ""
 
     def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
@@ -673,7 +687,7 @@ class AnydataNode(yangson.schemanode.AnydataNode, SchemaNode):
 
     def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return ""
 
     def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
@@ -688,7 +702,7 @@ class AnyxmlNode(yangson.schemanode.AnyxmlNode, SchemaNode):
 
     def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return ""
 
     def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
@@ -717,7 +731,7 @@ class RpcActionNode(yangson.schemanode.RpcActionNode, GroupNode):
         super(yangson.schemanode.SchemaTreeNode, self)._handle_substatements(stmt, sctx)
 
     def get_price(self) -> Optional[int]:
-        return self._absolute_price(self.sid)
+        return self._absolute_price(self.sid) if self.sid is not None else None
 
     def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
@@ -764,7 +778,7 @@ class NotificationNode(yangson.schemanode.NotificationNode, GroupNode):
         dbg_logger.debug(f"NotificationNode __init__() {self.__class__.__name__}")
 
     def get_price(self) -> Optional[int]:
-        return self._absolute_price(self.sid)
+        return self._absolute_price(self.sid) if self.sid is not None else None
 
     def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
