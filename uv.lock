@@ -416,7 +416,7 @@ source = { git = "https://github.com/vvilimek/yang-sid-base#cb53e817499b114e29a3
 [[package]]
 name = "yangson"
 version = "0.1.2"
-source = { git = "https://github.com/vvilimek/yangson#8c0e810766cc99588aa98b40eab5673ec29a0702" }
+source = { git = "https://github.com/vvilimek/yangson#c0286ae1d98e02c25012af997db1fe97a0693ea0" }
 dependencies = [
     { name = "elementpath" },
     { name = "pyyaml" },
