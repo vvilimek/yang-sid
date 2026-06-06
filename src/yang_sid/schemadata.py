@@ -127,8 +127,12 @@ class SchemaData(yangson.schemadata.SchemaData):
                     # TODO submodule revision
                     # TODO do not assign SID for not implemented (import only) modules and submodules
                     rev = sid_file.revision if sid_file.revision else ""
+                    mod_data = self.modules_by_name[item.identifier]
+                    rev = mod_data.yang_id[1]
                     mod_data = self.modules[(item.identifier, rev)]
                     mod_data.sid = item.sid
+                    # Intentionally, the SID is assigned only on the implemeted module,
+                    # or to import-only module used during SID File generation (as listed in 'dependency_revision')
                     self.modules_by_sid[item.sid] = mod_data
                     self.all_sids[item.sid] = mod_data
                 case ItemNamespace.IDENTITY:

@@ -141,6 +141,9 @@ class DataModel(yangson.datamodel.DataModel):
         mods = []
         newest = {}
         for mod in self.schema_data.modules:
+            if self.schema_data.modules[mod].is_submodule:
+                continue
+
             # the revision-less modules has identifier ("name", "")
             known_rev = newest.get(mod[0])
             # unknown module yet
@@ -152,9 +155,30 @@ class DataModel(yangson.datamodel.DataModel):
                     or (not known_rev and mod[1] != "")):
                 newest[mod[0]] = mod[1]
 
-        def finish_module(obj, mods, schema_data, done, newest) -> None:
+        # We swap (implement, import) if the import has newer revision than the implemented module,
+        # I don't thing this is 100% valid but should in most cases (this is a rare case nevertheless)
+        newer_imports = set()
+        library_mods = self.yang_library["ietf-yang-library:modules-state"]["module"]
+        # The the module entry, the conformance-type, revision and name fields are mandatory
+        for m_impl in library_mods:
+            if m_impl['conformance-type'] != 'implement':
+                continue
+            for m_import in library_mods:
+                if m_impl['name'] != m_import['name']:
+                    continue
+                if m_import['conformance-type'] != 'import':
+                    continue
+                if ((m_impl['revision'] and m_impl['revision'] < m_import['revision'])
+                        or (m_impl['revision'] == '' and m_import['revision'])):
+                    newer_imports.add(m_impl['name'])
+
+
+        def finish_module(obj, mods, schema_data, done, newest, implement=True) -> None:
             yl_mod = copy.deepcopy(obj)
-            yl_mod["conformance-type"] = "implement"
+            if implement:
+                yl_mod["conformance-type"] = "implement"
+            else:
+                yl_mod["conformance-type"] = "import"
 
             mod_data = schema_data.modules[(yl_mod["name"], newest[yl_mod["name"]])]
             # Note that feature must be module toplevel statement only
@@ -170,20 +194,31 @@ class DataModel(yangson.datamodel.DataModel):
 
         done = set()
         for obj in self.yang_library["ietf-yang-library:modules-state"]["module"]:
-            if (obj["conformance-type"] == "implement" or
-                    (obj["conformance-type"] == "import" and obj["revision"] != "")):
+            if (obj['name'] in newer_imports and obj['conformance-type'] == 'import'
+                    and obj['revision'] == newest[obj['name']]):
                 finish_module(obj, mods, self.schema_data, done, newest)
 
-        for notdone in (name for name in newest.keys() if name not in done):
-            for obj in self.yang_library["ietf-yang-library:modules-state"]["module"]:
-                if obj["name"] == notdone:
-                    finish_module(obj, mods, self.schema_data, done, newest)
+        for obj in self.yang_library["ietf-yang-library:modules-state"]["module"]:
+            if obj['name'] in done:
+                continue
+            if (obj["conformance-type"] == "implement" or
+                    (obj["conformance-type"] == "import" and obj["revision"] == newest[obj["name"]])):
+                finish_module(obj, mods, self.schema_data, done, newest)
+
+        for m in self.yang_library["ietf-yang-library:modules-state"]["module"]:
+            if m["name"] in newer_imports and m["conformance-type"] == "implement":
+                finish_module(m, mods, self.schema_data, done, {m["name"]: m["revision"]}, implement=False)
+
+        for m in self.yang_library["ietf-yang-library:modules-state"]["module"]:
+            if m["conformance-type"] == "import" and m["revision"] < newest[m["name"]]:
+                finish_module(m, mods, self.schema_data, done, {m["name"]: m["revision"]}, implement=False)
 
         mod_path = self.schema_data.module_search_path
         yltext = json.dumps({"ietf-yang-library:modules-state": {"module-set-id": "0", "module": mods}})
         self.complete_model = yangson.datamodel.DataModel(yltext, mod_path,
                                                           data_factory=data_factory,
                                                           tree_factory=tree_factory)
+
 
     def ascii_tree(self, no_types: bool = False, val_count: bool = False, sid: bool = False, sid_price: bool = False) -> str:
         """Generate ASCII art representation of the schema tree.
