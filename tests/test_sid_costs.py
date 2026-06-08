@@ -14,18 +14,18 @@ def get_root_dir():
 def root_dir():
     return get_root_dir()
 
-def test_sid_prices(capsys, root_dir):
-    with open(root_dir / "tests" / "prices.out", mode="r", encoding="utf8") as file:
+def test_sid_costs(capsys, root_dir):
+    with open(root_dir / "tests" / "costs.out", mode="r", encoding="utf8") as file:
         expected_output = file.read()
 
     with capsys.disabled():
         proc = subprocess.run(["uv", "run", "yang-sid", 
                        "-t", 
                        "--sid", 
-                       "--sid-price", 
+                       "--sid-cost", 
                        "-p", f"{root_dir / 'yang_modules'}:{root_dir / 'src' / 'yang_sid' / 'yang_modules'}", 
                        "--sid-path", root_dir / "sid", 
-                       root_dir / "lib" / "prices-lib.json"],
+                       root_dir / "lib" / "costs-lib.json"],
                 capture_output=True)
 
     assert proc.stdout.decode(encoding="utf8") == expected_output
@@ -42,7 +42,7 @@ def test_lib(root_dir, lib_file):
     main(infile=lib_file,
          tree=True,
          sid=True,
-         sid_price=True,
+         sid_cost=True,
          path=f"{root_dir / 'yang_modules'}:{root_dir / 'src' / 'yang_sid' / 'yang_modules'}",
          sid_path=str(root_dir / "sid")
          )

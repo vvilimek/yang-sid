@@ -1,8 +1,8 @@
-module prices {
+module costs {
   yang-version 1.1;
 
-  prefix p;
-  namespace "http://example.com/prices";
+  prefix c;
+  namespace "http://example.com/costs";
 
   leaf one-linear { type uint32; }
   leaf two-linear { type uint32; }

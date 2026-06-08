@@ -29,7 +29,7 @@ class SchemaNode(yangson.schemanode.SchemaNode):
     """Abstract class with SID support for all SID-aware schema nodes."""
 
     parent: Optional["InternalNode"]
-    sid_prices: tuple[tuple[int, int]] = (
+    sid_costs: tuple[tuple[int, int]] = (
             (23, 1), # 23, len(cbor2.dumps(23))
             (255, 2), # 2**8 - 1, len(cbor2.dumps(255))
             (65535, 3), # 2**16 - 1, len(cbor2.dumps(65535))
@@ -47,7 +47,7 @@ class SchemaNode(yangson.schemanode.SchemaNode):
     def has_complete_sid_map(self) -> bool:
         return False
 
-    def get_price(self) -> Optional[int]:
+    def get_cost(self) -> Optional[int]:
         parent = self.parent
         assert parent is not None
 
@@ -81,30 +81,30 @@ class SchemaNode(yangson.schemanode.SchemaNode):
                     return None
                 delta = self.sid - parent.sid
         except Exception as e:
-            # TODO the price of the string should be considered
-            raise ValueError(f"Missing SID for price calculation {self.as_schema_route()}") from e
+            # TODO the cost of the string should be considered
+            raise ValueError(f"Missing SID for cost calculation {self.as_schema_route()}") from e
 
-        return self._absolute_price(delta)        
+        return self._absolute_cost(delta)        
 
     @classmethod
-    def _absolute_price(cls, sid: Union[SID, RelativeSID, None]) -> int:
-        for (limit, price) in cls.sid_prices:
+    def _absolute_cost(cls, sid: Union[SID, RelativeSID, None]) -> int:
+        for (limit, cost) in cls.sid_costs:
             if int(sid) <= limit:
-                return price
+                return cost
 
         raise ValueError("SID number MUST be 63-bit number, " +
                          "the larget limit is 64-bit but the SID number is even larger.")
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
         line = super()._tree_line(no_type, ctype)
         if sid and self.sid:
             line = line + f" {self.sid}"
         elif sid and not isinstance(self, (ChoiceNode, CaseNode, YangData)):
             line = line + " unknown sid"
-        price = self.get_price()
-        if sid_price and price is not None:
-            line = line + f" price {price}"
+        cost = self.get_cost()
+        if sid_cost and cost is not None:
+            line = line + f" cost {cost}"
         return line
 
     # _follow_leafref  works without overriding, the YangData is derived from yangson.schemanode.YangData
@@ -223,7 +223,7 @@ class InternalNode(yangson.schemanode.InternalNode, SchemaNode):
             if not child.has_complete_sid_map():
                 return False
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
         def suffix(sn):
             return f" {{{sn.val_count}}}\n" if val_count and isinstance(
@@ -247,22 +247,22 @@ class InternalNode(yangson.schemanode.InternalNode, SchemaNode):
             import inspect
             if 'sid' not in inspect.signature(c._tree_line)._parameters:
                 breakpoint()
-            res += (indent + c._tree_line(no_types, ctype, sid=sid, sid_price=sid_price) + suffix(c) +
-                    c._ascii_tree(indent + "|  ", no_types, val_count, ctype, sid=sid, sid_price=sid_price))
+            res += (indent + c._tree_line(no_types, ctype, sid=sid, sid_cost=sid_cost) + suffix(c) +
+                    c._ascii_tree(indent + "|  ", no_types, val_count, ctype, sid=sid, sid_cost=sid_cost))
         if len(cs) > 0:
-            res += (indent + cs[-1]._tree_line(no_types, ctype, sid=sid, sid_price=sid_price) + suffix(cs[-1]) +
-                cs[-1]._ascii_tree(indent + "   ", no_types, val_count, ctype, sid=sid, sid_price=sid_price))
+            res += (indent + cs[-1]._tree_line(no_types, ctype, sid=sid, sid_cost=sid_cost) + suffix(cs[-1]) +
+                cs[-1]._ascii_tree(indent + "   ", no_types, val_count, ctype, sid=sid, sid_cost=sid_cost))
         for ydc in ydcs:
-            res += (ydc._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(ydc) +
-                    ydc._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+            res += (ydc._tree_line(no_types, False, sid=sid, sid_cost=sid_cost) + suffix(ydc) +
+                    ydc._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_cost=sid_cost))
         for sc in scs:
-            res += (sc._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(sc) +
-                sc._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+            res += (sc._tree_line(no_types, False, sid=sid, sid_cost=sid_cost) + suffix(sc) +
+                sc._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_cost=sid_cost))
         return res
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
     # _schema_pattern works without overriding, the YangData is derived from yangson.schemanode.YangData
     # _handle_child works without overriding, the YangData is derived from yangson.schemanode.YangData
@@ -295,13 +295,13 @@ class GroupNode(yangson.schemanode.GroupNode, InternalNode):
             self._add_child(cn)
             cn._handle_child(node, stmt, sctx)
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class YangData(yangson.schemanode.YangData, GroupNode):
     """Standard ietf-restconf:yang-data node."""
@@ -311,10 +311,10 @@ class YangData(yangson.schemanode.YangData, GroupNode):
         super().__init__(sctx)
         dbg_logger.debug(f"YangData __init__() {self.__class__.__name__}")
 
-    def get_price(self) -> Optional[int]:
+    def get_cost(self) -> Optional[int]:
         return None
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
         def suffix(sn):
             return f" {{{sn.val_count}}}\n" if val_count else "\n"
@@ -322,12 +322,12 @@ class YangData(yangson.schemanode.YangData, GroupNode):
             return ""
 
         c = self.children[0]
-        return (indent + c._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(c) +
-                c._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+        return (indent + c._tree_line(no_types, False, sid=sid, sid_cost=sid_cost) + suffix(c) +
+                c._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_cost=sid_cost))
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
     """Root node of a schema tree with SIDs."""
@@ -455,23 +455,23 @@ class SchemaTreeNode(yangson.schemanode.SchemaTreeNode, GroupNode):
         yang_data = YangData(yd_sctx)
         self._handle_child(yang_data, stmt, yd_sctx)
 
-    def get_price(self) -> Optional[int]:
+    def get_cost(self) -> Optional[int]:
         return None
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
-    def total_sid_price(self) -> int:
-        total_price = 0
-        # for ansector in SchemaTreeIterator(self) is one off (price(SID(0)) == 1)
+    def total_sid_cost(self) -> int:
+        total_cost = 0
+        # for ansector in SchemaTreeIterator(self) is one off (cost(SID(0)) == 1)
         for child in self.children:
             for descendant in SchemaTreeIterator(child):
-                price = descendant.get_price()
-                if price is not None:
-                    total_price += price
+                cost = descendant.get_cost()
+                if cost is not None:
+                    total_cost += cost
 
-        return total_price
+        return total_cost
     # _augment_stmt works without overriding, the Structure is derived from yangson.schemanode.Structure
 
 class DataNode(yangson.schemanode.DataNode, SchemaNode):
@@ -481,9 +481,9 @@ class DataNode(yangson.schemanode.DataNode, SchemaNode):
         super().__init__()
         dbg_logger.debug(f"DataNode __init__() {self.__class__.__name__}")
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class TerminalNode(yangson.schemanode.TerminalNode, SchemaNode):
     """Abstract superclass for terminal nodes with SIDs in the schema tree."""
@@ -493,12 +493,12 @@ class TerminalNode(yangson.schemanode.TerminalNode, SchemaNode):
         super().__init__()
         dbg_logger.debug(f"TerminalNode __init__() {self.__class__.__name__}")
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = False, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = False, sid: bool = False, sid_cost: bool = False) -> str:
         return super(InternalNode, self)._tree_line(no_type, ctype)
 
-    #def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    #def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
     #    """Return the receiver's contribution to tree diagram."""
-    #    return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+    #    return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class ContainerNode(yangson.schemanode.ContainerNode, InternalNode):
     """Container node with SIDs."""
@@ -508,9 +508,9 @@ class ContainerNode(yangson.schemanode.ContainerNode, InternalNode):
         super().__init__()
         dbg_logger.debug(f"ContainerNode __init__() {self.__class__.__name__}")
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class Structure(yangson.schemanode.Structure, InternalNode):
     """ietf-yang-structure-ext:structure node with SIDs."""
@@ -520,7 +520,7 @@ class Structure(yangson.schemanode.Structure, InternalNode):
         super().__init__()
         dbg_logger.debug(f"Structure __init__() {self.__class__.__name__}")
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
 
         def suffix(sn):
@@ -532,14 +532,14 @@ class Structure(yangson.schemanode.Structure, InternalNode):
             cs.extend(c._flatten())
         res = ""
         for c in cs[:-1]:
-            res += (indent + c._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(c) +
-                    c._ascii_tree(indent + "|  ", no_types, val_count, False, sid=sid, sid_price=sid_price))
-        return (res + indent + cs[-1]._tree_line(no_types, False, sid=sid, sid_price=sid_price) + suffix(cs[-1]) +
-                cs[-1]._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_price=sid_price))
+            res += (indent + c._tree_line(no_types, False, sid=sid, sid_cost=sid_cost) + suffix(c) +
+                    c._ascii_tree(indent + "|  ", no_types, val_count, False, sid=sid, sid_cost=sid_cost))
+        return (res + indent + cs[-1]._tree_line(no_types, False, sid=sid, sid_cost=sid_cost) + suffix(cs[-1]) +
+                cs[-1]._ascii_tree(indent + "   ", no_types, val_count, False, sid=sid, sid_cost=sid_cost))
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 
 class SequenceNode(yangson.schemanode.SequenceNode, SchemaNode):
@@ -550,9 +550,9 @@ class SequenceNode(yangson.schemanode.SequenceNode, SchemaNode):
         super().__init__()
         dbg_logger.debug(f"SequenceNode __init__() {self.__class__.__name__}")
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class ListNode(yangson.schemanode.ListNode, InternalNode):
     """List node with SIDs."""
@@ -562,13 +562,13 @@ class ListNode(yangson.schemanode.ListNode, InternalNode):
         super().__init__()
         dbg_logger.debug(f"ListNode __init__() {self.__class__.__name__}")
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class ChoiceNode(yangson.schemanode.ChoiceNode, InternalNode):
     """Choice node with SIDs."""
@@ -594,16 +594,16 @@ class ChoiceNode(yangson.schemanode.ChoiceNode, InternalNode):
             if not child.has_complete_sid_map():
                 return False
 
-    def get_price(self) -> Optional[int]:
+    def get_cost(self) -> Optional[int]:
         return None
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return InternalNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class CaseNode(yangson.schemanode.CaseNode, InternalNode):
     """Case node with SIDs."""
@@ -617,16 +617,16 @@ class CaseNode(yangson.schemanode.CaseNode, InternalNode):
             if not child.has_complete_sid_map():
                 return False
 
-    def get_price(self) -> Optional[int]:
+    def get_cost(self) -> Optional[int]:
         return None
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return InternalNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class LeafNode(yangson.schemanode.LeafNode, SchemaNode):
     """Leaf node with SIDs."""
@@ -638,13 +638,13 @@ class LeafNode(yangson.schemanode.LeafNode, SchemaNode):
     def has_complete_sid_map(self) -> bool:
         return self.sid is not None
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
         return ""
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class LeafListNode(yangson.schemanode.LeafListNode, SchemaNode):
     """Leaf-list node with SIDs."""
@@ -655,13 +655,13 @@ class LeafListNode(yangson.schemanode.LeafListNode, SchemaNode):
     def has_complete_sid_map(self) -> bool:
         return self.sid is not None
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
         return ""
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
  
 class AnyContentNode(yangson.schemanode.AnyContentNode, SchemaNode):
     """Abstract class for anydata or anyxml nodes with SIDs."""
@@ -670,13 +670,13 @@ class AnyContentNode(yangson.schemanode.AnyContentNode, SchemaNode):
         super().__init__()
         dbg_logger.debug(f"AnyContentNode __init__() {self.__class__.__name__}")
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
         return ""
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class AnydataNode(yangson.schemanode.AnydataNode, SchemaNode):
     """Anydata node with SIDs."""
@@ -685,13 +685,13 @@ class AnydataNode(yangson.schemanode.AnydataNode, SchemaNode):
         super().__init__()
         dbg_logger.debug(f"AnydataNode __init__() {self.__class__.__name__}")
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
         return ""
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class AnyxmlNode(yangson.schemanode.AnyxmlNode, SchemaNode):
     """Anyxml node with SIDs."""
@@ -700,13 +700,13 @@ class AnyxmlNode(yangson.schemanode.AnyxmlNode, SchemaNode):
         super().__init__()
         dbg_logger.debug(f"AnyxmlNode __init__() {self.__class__.__name__}")
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
         return ""
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class RpcActionNode(yangson.schemanode.RpcActionNode, GroupNode):
     """RPC or action node with SIDs."""
@@ -730,16 +730,16 @@ class RpcActionNode(yangson.schemanode.RpcActionNode, GroupNode):
         # skip the yangson.schemanode.RpcActionNode._handle_substatements()
         super(yangson.schemanode.SchemaTreeNode, self)._handle_substatements(stmt, sctx)
 
-    def get_price(self) -> Optional[int]:
-        return self._absolute_price(self.sid) if self.sid is not None else None
+    def get_cost(self) -> Optional[int]:
+        return self._absolute_cost(self.sid) if self.sid is not None else None
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class InputNode(yangson.schemanode.InputNode, InternalNode):
     """RPC or action input node with SIDs."""
@@ -747,13 +747,13 @@ class InputNode(yangson.schemanode.InputNode, InternalNode):
         super().__init__(ns)
         dbg_logger.debug(f"InputNode __init__() {self.__class__.__name__}")
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class OutputNode(yangson.schemanode.OutputNode, InternalNode):
     """RPC or action output node with SIDs."""
@@ -762,13 +762,13 @@ class OutputNode(yangson.schemanode.OutputNode, InternalNode):
         super().__init__(ns)
         dbg_logger.debug(f"OutputNode __init__() {self.__class__.__name__}")
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
 
 class NotificationNode(yangson.schemanode.NotificationNode, GroupNode):
     """Notification node with SIDs."""
@@ -777,16 +777,16 @@ class NotificationNode(yangson.schemanode.NotificationNode, GroupNode):
         super().__init__()
         dbg_logger.debug(f"NotificationNode __init__() {self.__class__.__name__}")
 
-    def get_price(self) -> Optional[int]:
-        return self._absolute_price(self.sid) if self.sid is not None else None
+    def get_cost(self) -> Optional[int]:
+        return self._absolute_cost(self.sid) if self.sid is not None else None
 
-    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _ascii_tree(self, indent: str, no_types: bool, val_count: bool, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's subtree as ASCII art."""
-        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_price=sid_price)
+        return InternalNode._ascii_tree(self, indent, no_types, val_count, ctype, sid=sid, sid_cost=sid_cost)
 
-    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_price: bool = False) -> str:
+    def _tree_line(self, no_type: bool = False, ctype: bool = True, sid: bool = False, sid_cost: bool = False) -> str:
         """Return the receiver's contribution to tree diagram."""
-        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_price=sid_price)
+        return SchemaNode._tree_line(self, no_type, ctype, sid=sid, sid_cost=sid_cost)
  
 class SchemaTreeFactory:
     """Factory creating SID-aware schema tree."""

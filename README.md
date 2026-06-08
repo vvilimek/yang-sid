@@ -36,64 +36,64 @@ model.load_all_module_sids()
 
 Note that while the package name is `yang-sid`, it is not valid python identifier so you must use `yang_sid` to import the package in python.
 
-# CLI: SID prices
+# CLI: SID costs
 
 Run from project root directory
 
 ```sh
-uv run yang-sid -t -p yang_modules:src/yang_sid/yang_modules --sid --sid-price --sid-path sid lib/system-lib.json
+uv run yang-sid -t -p yang_modules:src/yang_sid/yang_modules --sid --sid-cost --sid-path sid lib/system-lib.json
 ```
 
 Explanation: The `-t` argument denotes that a YANG ascii tree representation should be printed.
 The `-p` argument specifies YANG Module path. The `--sid` argument enables printing of SID numbers,
-the `--sid-price` addes the CBOR encoding prices (in number of bytes). The `--sid-path` is YANG '.sid' File
+the `--sid-cost` addes the CBOR encoding costs (in number of bytes). The `--sid-path` is YANG '.sid' File
 path, and it is similar to the `-p` argument. The `lib/system-lib.json` is YANG Library as of [RFC7895](https://datatracker.ietf.org/doc/html/rfc7895).
 
 ```
-+---x ietf-system:set-current-datetime SID(1715) price 3
-|  +--ro input SID(1716) price 1
-|  |  +--ro current-datetime SID(1717) price 1
-|  +--ro output SID(1718) price 1
-+--rw ietf-system:system SID(1719) price 3
-|  +--rw clock SID(1744) price 2
++---x ietf-system:set-current-datetime SID(1715) cost 3
+|  +--ro input SID(1716) cost 1
+|  |  +--ro current-datetime SID(1717) cost 1
+|  +--ro output SID(1718) cost 1
++--rw ietf-system:system SID(1719) cost 3
+|  +--rw clock SID(1744) cost 2
 |  |  +--rw timezone
 |  |     +-- timezone-utc-offset
-|  |        +--rw timezone-utc-offset SID(1746) price 1
-|  +--rw contact SID(1747) price 2
-|  +--rw dns-resolver SID(1748) price 2
-|  |  +--rw options SID(1749) price 1
-|  |  |  +--rw attempts SID(1750) price 1
-|  |  |  +--rw timeout SID(1751) price 1
-|  |  +--rw search SID(1752) price 1
-|  |  +--rw server SID(1753) price 1
-|  |     +--rw name SID(1754) price 1
+|  |        +--rw timezone-utc-offset SID(1746) cost 1
+|  +--rw contact SID(1747) cost 2
+|  +--rw dns-resolver SID(1748) cost 2
+|  |  +--rw options SID(1749) cost 1
+|  |  |  +--rw attempts SID(1750) cost 1
+|  |  |  +--rw timeout SID(1751) cost 1
+|  |  +--rw search SID(1752) cost 1
+|  |  +--rw server SID(1753) cost 1
+|  |     +--rw name SID(1754) cost 1
 |  |     +--rw transport
 |  |        +-- udp-and-tcp
-|  |           +--rw udp-and-tcp SID(1755) price 1
-|  |              +--rw address SID(1756) price 1
-|  +--rw hostname SID(1758) price 2
-|  +--rw location SID(1759) price 2
-+---x ietf-system:system-restart SID(1720) price 3
-|  +--ro input SID(1721) price 1
-|  +--ro output SID(1722) price 1
-+---x ietf-system:system-shutdown SID(1723) price 3
-|  +--ro input SID(1724) price 1
-|  +--ro output SID(1725) price 1
-+--ro ietf-system:system-state SID(1726) price 3
-   +--ro clock SID(1727) price 1
-   |  +--ro boot-datetime SID(1728) price 1
-   |  +--ro current-datetime SID(1729) price 1
-   +--ro platform SID(1730) price 1
-      +--ro machine SID(1731) price 1
-      +--ro os-name SID(1732) price 1
-      +--ro os-release SID(1733) price 1
-      +--ro os-version SID(1734) price 1
+|  |           +--rw udp-and-tcp SID(1755) cost 1
+|  |              +--rw address SID(1756) cost 1
+|  +--rw hostname SID(1758) cost 2
+|  +--rw location SID(1759) cost 2
++---x ietf-system:system-restart SID(1720) cost 3
+|  +--ro input SID(1721) cost 1
+|  +--ro output SID(1722) cost 1
++---x ietf-system:system-shutdown SID(1723) cost 3
+|  +--ro input SID(1724) cost 1
+|  +--ro output SID(1725) cost 1
++--ro ietf-system:system-state SID(1726) cost 3
+   +--ro clock SID(1727) cost 1
+   |  +--ro boot-datetime SID(1728) cost 1
+   |  +--ro current-datetime SID(1729) cost 1
+   +--ro platform SID(1730) cost 1
+      +--ro machine SID(1731) cost 1
+      +--ro os-name SID(1732) cost 1
+      +--ro os-release SID(1733) cost 1
+      +--ro os-version SID(1734) cost 1
 
-Total price: 49
+Total cost: 49
 ```
 
 Note that the current version of the code is not optimal: 
- - Code assumes whole data model to have SID to produce valid prices.
+ - Code assumes whole data model to have SID to produce valid costs.
  - No data model restriction is available.
  - List are counted as if they have only a single entry.
 

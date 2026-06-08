@@ -43,7 +43,7 @@ def main(infile: Optional[str] = None, pickled: bool = False,
          subschema: Optional[PrefName] = None,
          validate: Optional[str] = None,
          sid: bool = False,
-         sid_price: bool = False,
+         sid_cost: bool = False,
          sid_path: Optional[str] = None) -> int:
     """Entry-point for the command-line utility.
 
@@ -117,7 +117,7 @@ def main(infile: Optional[str] = None, pickled: bool = False,
             "--sid",action="store_true",
             help="")
         parser.add_argument(
-            "--sid-price", action="store_true",
+            "--sid-cost", action="store_true",
             help="")
         parser.add_argument(
             "--sid-path",
@@ -136,7 +136,7 @@ def main(infile: Optional[str] = None, pickled: bool = False,
         subschema = args.subschema
         validate = args.validate
         sid = args.sid
-        sid_price = args.sid_price
+        sid_cost = args.sid_cost
         sid_path = args.sid_path
     if pickled:
         try:
@@ -181,7 +181,7 @@ def main(infile: Optional[str] = None, pickled: bool = False,
         sid_path = sid_path.split(":")
         dm.set_sid_path(sid_path)
         dm.load_all_module_sids()
-        print(dm.ascii_tree(no_types, sid=sid, sid_price=sid_price))
+        print(dm.ascii_tree(no_types, sid=sid, sid_cost=sid_cost))
         return 0
     if digest:
         print(dm.schema_digest())

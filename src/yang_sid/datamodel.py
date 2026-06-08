@@ -220,7 +220,7 @@ class DataModel(yangson.datamodel.DataModel):
                                                           tree_factory=tree_factory)
 
 
-    def ascii_tree(self, no_types: bool = False, val_count: bool = False, sid: bool = False, sid_price: bool = False) -> str:
+    def ascii_tree(self, no_types: bool = False, val_count: bool = False, sid: bool = False, sid_cost: bool = False) -> str:
         """Generate ASCII art representation of the schema tree.
 
         Args:
@@ -231,7 +231,7 @@ class DataModel(yangson.datamodel.DataModel):
             String with the ASCII tree.
         """
         
-        extended_ascii_tree = self.schema._ascii_tree("", no_types, val_count, sid=sid, sid_price=sid_price)
-        extended_ascii_tree += f"\nTotal price: {self.schema.total_sid_price()}"
+        extended_ascii_tree = self.schema._ascii_tree("", no_types, val_count, sid=sid, sid_cost=sid_cost)
+        extended_ascii_tree += f"\nTotal cost: {self.schema.total_sid_cost()}"
         return extended_ascii_tree
 

@@ -2,9 +2,9 @@
   "ietf-yang-library:modules-state": {
     "module": [
       {
-        "name": "prices",
+        "name": "costs",
         "revision": "",
-        "namespace": "http://example.com/prices",
+        "namespace": "http://example.com/costs",
         "conformance-type": "implement"
       }
     ],
